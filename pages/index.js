@@ -1,3 +1,11 @@
+import Link from 'next/link';
+
 export default function Home() {
-  return <button className="btn">Hello daisyUI</button>;
+  return (
+    <>
+      <Link href="/newEvent">
+        <button className="btn">New Event</button>
+      </Link>
+    </>
+  );
 }
