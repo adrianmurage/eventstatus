@@ -4,7 +4,8 @@ export default function NewEvent() {
   return (
     <>
       <div className="container max-w-xs mx-auto pt-6">
-        <EventDetailsForm />
+        {/* <EventDetailsForm /> */}
+        <SessionDetailsForm />
       </div>
     </>
   );
@@ -15,6 +16,71 @@ function getCurrentDate() {
   const ISODate = date.toISOString().substring(0, 10);
 
   return ISODate;
+}
+
+function SessionDetailsForm() {
+  const [sessionName, setSessionName] = useState('');
+  const [speakerName, setSpeakerName] = useState('');
+
+  return (
+    <>
+      <p>Great, we have an event! Let's add sessions to your event.</p>
+      <div className="divider"></div>
+      <form
+        className="space-y-6"
+        onSubmit={(event) => {
+          event.preventDefault();
+        }}
+      >
+        <div className="form-control w-full">
+          <label className="label">
+            <span className="label-text">
+              What is the name of this session?
+            </span>
+          </label>
+          <input
+            required
+            type="text"
+            className="input input-bordered w-full max-w-xs"
+            value={sessionName}
+            onChange={(event) => {
+              setSessionName(event.target.value);
+            }}
+          />
+        </div>
+
+        <div className="form-control w-full">
+          <label className="label">
+            <span className="label-text">
+              What is the name of the speaker for this session?
+            </span>
+          </label>
+          <input
+            required
+            type="text"
+            className="input input-bordered w-full max-w-xs"
+            value={speakerName}
+            onChange={(event) => {
+              setSpeakerName(event.target.value);
+            }}
+          />
+        </div>
+        <button type="button" className="btn capitalize btn-outline">
+          <span className="text-2xl"> &#43;</span>
+          Add another session
+        </button>
+
+        <div className="form-control space-y-6 pb-10 pt-5 ">
+          <button type="button" className="btn capitalize">
+            Back
+          </button>
+          <button type="submit" className="btn capitalize">
+            Finish
+          </button>
+        </div>
+      </form>
+    </>
+  );
 }
 
 function EventDetailsForm() {
@@ -117,10 +183,10 @@ function EventDetailsForm() {
         </div>
 
         <div className="form-control space-y-6 pb-10 pt-5">
-          <button type="button" className="btn">
+          <button type="button" className="btn capitalize">
             Cancel
           </button>
-          <button type="submit" className="btn">
+          <button type="submit" className="btn capitalize">
             Next
           </button>
         </div>
