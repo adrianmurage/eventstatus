@@ -11,14 +11,17 @@ export default async (req, res) => {
   const { id, data } = payload;
   const databaseID = process.env.APPWRITE_DATABASE_ID;
   const sessionCollectionId = process.env.SESSION_COLLECTION_ID;
+  const eventCollectionID = process.env.EVENT_COLLECTION_ID;
 
-  try {
-    // Update event
+  if (req.method.toUpperCase() == "PATCH") {
+    try {
+      // Update session
 
-    await databases.updateDocument(databaseID, sessionCollectionId, id, data);
+      await databases.updateDocument(databaseID, sessionCollectionId, id, data);
 
-    res.status(201).json({ success: true, message: "Updated!" });
-  } catch (error) {
-    res.status(401).json({ success: false, error: error.toString() });
+      res.status(201).json({ success: true, message: "Updated!" });
+    } catch (error) {
+      res.status(401).json({ success: false, error: error.toString() });
+    }
   }
 };
