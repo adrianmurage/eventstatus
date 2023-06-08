@@ -83,4 +83,21 @@ export default async (req, res) => {
       res.status(401).json({ success: false, error: error.toString() });
     }
   }
+
+  if (req.method.toUpperCase() == "PATCH") {
+    const payload = JSON.parse(req.body || null);
+    const { id, data } = payload;
+    if (!id || !data)
+      return res
+        .status(401)
+        .json({ success: false, error: "Missing event ID and update data" });
+
+    try {
+      // Update event
+      await databases.updateDocument(databaseID, eventCollectionID, id, data);
+      res.status(201).json({ success: true, message: "Updated!" });
+    } catch (error) {
+      res.status(401).json({ success: false, error: error.toString() });
+    }
+  }
 };
