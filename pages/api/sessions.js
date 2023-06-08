@@ -26,7 +26,7 @@ export default async (req, res) => {
         );
 
         // Fetch speaker data for each session
-        const sessionSpeakers = [];
+        let sessionSpeakers = [];
         if (session.speakers && session.speakers.length > 0) {
           const promises = session.speakers.map((speakerId) =>
             databases.getDocument("speakersCollectionId", speakerId)
