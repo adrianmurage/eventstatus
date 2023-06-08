@@ -12,6 +12,7 @@ export default async (req, res) => {
   const databaseID = process.env.APPWRITE_DATABASE_ID;
   const sessionCollectionId = process.env.SESSION_COLLECTION_ID;
   const eventCollectionID = process.env.EVENT_COLLECTION_ID;
+  const speakerCollectionId = process.env.SPEAKER_COLLECTION_ID;
 
   if (req.method.toUpperCase() == "GET") {
     const { sessionId, eventId } = req.query;
@@ -47,7 +48,7 @@ export default async (req, res) => {
                 const speakerPromises = session.speakers.map((speakerId) =>
                   databases.getDocument(
                     databaseID,
-                    "647e14be764849dc8128",
+                    speakerCollectionId,
                     speakerId
                   )
                 );
