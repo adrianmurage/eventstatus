@@ -8,25 +8,39 @@ const databases = new Databases(client);
 
 export default async (req, res) => {
   const payload = JSON.parse(req.body || null);
-  const { id, data } = payload;
+  const { data } = payload;
   const databaseID = process.env.APPWRITE_DATABASE_ID;
   const sessionCollectionId = process.env.SESSION_COLLECTION_ID;
   const eventCollectionID = process.env.EVENT_COLLECTION_ID;
   const speakerCollectionId = process.env.SPEAKER_COLLECTION_ID;
+  const { sessionId, eventId } = req.query;
 
   if (req.method.toUpperCase() == "GET") {
-    const { sessionId, eventId } = req.query;
-
     try {
       // If id is specified in query param, return the document associated with that id
       if (sessionId) {
-        const document = await databases.getDocument(
+        const session = await databases.getDocument(
           databaseID,
           sessionCollectionId,
           sessionId
         );
+
+        // Fetch speaker data for each session
+        const sessionSpeakers = [];
+        if (session.speakers && session.speakers.length > 0) {
+          const promises = session.speakers.map((speakerId) =>
+            databases.getDocument("speakersCollectionId", speakerId)
+          );
+          sessionSpeakers = await Promise.all(promises);
+        }
+
+        // Add the speaker data to the session object
+        const sessionWithSpeakers = {
+          ...session,
+          speakers: sessionSpeakers,
+        };
         return res.status(200).json({
-          data: document,
+          data: sessionWithSpeakers,
           error: null,
         });
       }
@@ -87,7 +101,12 @@ export default async (req, res) => {
     try {
       // Update session
 
-      await databases.updateDocument(databaseID, sessionCollectionId, id, data);
+      await databases.updateDocument(
+        databaseID,
+        sessionCollectionId,
+        sessionId,
+        data
+      );
 
       res.status(201).json({ success: true, message: "Updated!" });
     } catch (error) {
