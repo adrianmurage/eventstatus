@@ -76,9 +76,7 @@ export default async (req, res) => {
         }
       );
 
-      res
-        .status(201)
-        .json({ success: true, message: "Event created successfully" });
+      res.status(201).json({ success: true, error: null });
     } catch (error) {
       res.status(401).json({ success: false, error: error.toString() });
     }
@@ -95,7 +93,7 @@ export default async (req, res) => {
     try {
       // Update event
       await databases.updateDocument(databaseID, eventCollectionID, id, data);
-      res.status(201).json({ success: true, message: "Updated!" });
+      res.status(201).json({ success: true, error: null });
     } catch (error) {
       res.status(401).json({ success: false, error: error.toString() });
     }
