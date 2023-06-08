@@ -13,6 +13,75 @@ export default async (req, res) => {
   const sessionCollectionId = process.env.SESSION_COLLECTION_ID;
   const eventCollectionID = process.env.EVENT_COLLECTION_ID;
 
+  if (req.method.toUpperCase() == "GET") {
+    const { sessionId, eventId } = req.query;
+
+    try {
+      // If id is specified in query param, return the document associated with that id
+      if (sessionId) {
+        const document = await databases.getDocument(
+          databaseID,
+          sessionCollectionId,
+          sessionId
+        );
+        return res.status(200).json({
+          data: document,
+          error: null,
+        });
+      }
+      // Else return all documents for that event
+      if (eventId) {
+        const event = await databases.getDocument(
+          databaseID,
+          eventCollectionID,
+          eventId
+        );
+        const sessions = event.sessions;
+
+        // Get all the sessions for that event
+        const promises = sessions.map((id) => {
+          return databases
+            .getDocument(databaseID, sessionCollectionId, id)
+            .then((session) => {
+              if (session.speakers && session.speakers.length > 0) {
+                const speakerPromises = session.speakers.map((speakerId) =>
+                  databases.getDocument(
+                    databaseID,
+                    "647e14be764849dc8128",
+                    speakerId
+                  )
+                );
+                return Promise.all(speakerPromises).then((speakers) => {
+                  session.speakers = speakers;
+                  return session;
+                });
+              } else {
+                return session;
+              }
+            })
+            .catch((error) => {
+              console.log(error);
+              return [];
+            });
+        });
+
+        const documents = await Promise.all(promises);
+
+        return res.status(200).json({ data: documents, error: null });
+      }
+      res.status(400).json({
+        data: null,
+        error: "Either event ID or session ID must be provided",
+      });
+      return;
+    } catch (error) {
+      res.status(500).json({
+        data: null,
+        error: error.message,
+      });
+    }
+  }
+
   if (req.method.toUpperCase() == "PATCH") {
     try {
       // Update session
