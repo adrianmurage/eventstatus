@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 export default function NewEvent() {
   const [formSubmissionProgress, setFormSubmissionProgress] = useState({
-    activeForm: 0,
+    activeForm: 1,
     activeSessionSubmission: 0,
   });
   const [eventDetails, setEventDetails] = useState({
@@ -188,7 +188,16 @@ function SessionDetailsForm({
   setSessionsDetailsArray,
 }) {
   const [sessionName, setSessionName] = useState('');
+  const [sessionStartTime, setSessionStartTime] = useState('');
+  const [sessionEndTime, setSessionEndTime] = useState('');
+  const [sessionSlidesLink, setSessionSlidesLink] = useState('');
+
   const [speakerName, setSpeakerName] = useState('');
+  const [speakerTitle, setSpeakerTitle] = useState('');
+  const [speakerLinkedIn, setSpeakerLinkedIn] = useState('');
+  const [speakerTwitter, setSpeakerTwitter] = useState('');
+
+  const [speakersList, setSpeakersList] = useState([]);
 
   if (formSubmissionProgress.activeForm !== 1) return;
 
@@ -207,6 +216,8 @@ function SessionDetailsForm({
           console.log('submitted');
         }}
       >
+        <h2 className="font-bold">General Session Information</h2>
+
         <div className="form-control w-full">
           <label className="label">
             <span className="label-text">
@@ -223,23 +234,159 @@ function SessionDetailsForm({
             }}
           />
         </div>
-
         <div className="form-control w-full">
           <label className="label">
             <span className="label-text">
-              What is the name of the speaker for this session?
+              What time does the session start?
             </span>
           </label>
           <input
             required
-            type="text"
+            type="time"
             className="input input-bordered w-full max-w-xs"
-            value={speakerName}
+            value={sessionStartTime}
             onChange={(event) => {
-              setSpeakerName(event.target.value);
+              setSessionStartTime(event.target.value);
             }}
           />
         </div>
+        <div className="form-control w-full">
+          <label className="label">
+            <span className="label-text">What time does the session end?</span>
+          </label>
+          <input
+            required
+            type="time"
+            className="input input-bordered w-full max-w-xs"
+            value={sessionEndTime}
+            onChange={(event) => {
+              setSessionEndTime(event.target.value);
+            }}
+          />
+        </div>
+        <div className="form-control w-full">
+          <label className="label">
+            <span className="label-text">
+              Where can attendees find the slides for the session?
+            </span>
+          </label>
+          <input
+            required
+            type="url"
+            className="input input-bordered w-full max-w-xs"
+            value={sessionSlidesLink}
+            onChange={(event) => {
+              setSessionSlidesLink(event.target.value);
+            }}
+          />
+          <label className="label">
+            <span className="label-text-alt text-accent-content">
+              * Make sure the slides are publicly viewable
+            </span>
+          </label>
+        </div>
+
+        <h2 className="font-bold">Speaker Information</h2>
+
+        {/* Open the modal using ID.showModal() method */}
+        <button className="btn" onClick={() => window.my_modal_1.showModal()}>
+          Add a speaker
+        </button>
+        <dialog id="my_modal_1" className="modal">
+          <form method="dialog" className="modal-box">
+            <h3 className="font-bold text-lg">Add a speaker</h3>
+            <div className="form-control w-full">
+              <label className="label">
+                <span className="label-text">What is the speaker's name?</span>
+              </label>
+              <input
+                required
+                type="text"
+                className="input input-bordered w-full max-w-xs"
+                value={speakerName}
+                onChange={(event) => {
+                  setSpeakerName(event.target.value);
+                }}
+              />
+            </div>
+
+            <div className="form-control w-full">
+              <label className="label">
+                <span className="label-text">
+                  What is the speaker's job title?
+                </span>
+              </label>
+              <input
+                required
+                type="text"
+                className="input input-bordered w-full max-w-xs"
+                value={speakerTitle}
+                onChange={(event) => {
+                  setSpeakerTitle(event.target.value);
+                }}
+              />
+            </div>
+
+            <div className="form-control w-full">
+              <label className="label">
+                <span className="label-text">
+                  What is the speaker's LinkedIn?
+                </span>
+              </label>
+              <input
+                required
+                type="url"
+                className="input input-bordered w-full max-w-xs"
+                value={speakerLinkedIn}
+                onChange={(event) => {
+                  setSpeakerLinkedIn(event.target.value);
+                }}
+              />
+              <label className="label">
+                <span className="label-text-alt text-accent-content">
+                  * use the full url: "https://www.linkedin.com/in/username/"
+                </span>
+              </label>
+            </div>
+
+            <div className="form-control w-full">
+              <label className="label">
+                <span className="label-text">
+                  What is the speaker's Twitter?
+                </span>
+              </label>
+              <input
+                required
+                type="url"
+                className="input input-bordered w-full max-w-xs"
+                value={speakerTwitter}
+                onChange={(event) => {
+                  setSpeakerTwitter(event.target.value);
+                }}
+              />
+              <label className="label">
+                <span className="label-text-alt text-accent-content">
+                  * use the full url: "https://twitter.com/username"
+                </span>
+              </label>
+            </div>
+
+            <div className="modal-action">
+              {/* if there is a button in form, it will close the modal */}
+              <button
+                type="button"
+                onClick={() => window.my_modal_1.close()}
+                className="btn"
+              >
+                Close
+              </button>
+              <button type="submit" className="btn">
+                Save
+              </button>
+            </div>
+          </form>
+        </dialog>
+
         <button
           type="button"
           value="add another session"
