@@ -113,4 +113,18 @@ export default async (req, res) => {
       res.status(401).json({ success: false, error: error.toString() });
     }
   }
+  if (req.method.toUpperCase() == "DELETE") {
+    const { sessionId, eventId } = req.query;
+    try {
+      // Delete session document from session collection
+      await databases.deleteDocument(
+        databaseID,
+        sessionCollectionId,
+        sessionId
+      );
+      res.status(200).json({ success: true, message: "Deleted!" });
+    } catch (error) {
+      res.status(500).json({ success: false, error: error.toString() });
+    }
+  }
 };
