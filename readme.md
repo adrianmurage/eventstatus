@@ -1,0 +1,10 @@
+## Event Status
+
+## Environment Variables
+```bash
+APPWRITE_ENDPOINT=""
+APPWRITE_PROJECT=""
+APPWRITE_DATABASE_ID=""
+EVENT_COLLECTION_ID=""
+SESSION_COLLECTION_ID=""
+```
