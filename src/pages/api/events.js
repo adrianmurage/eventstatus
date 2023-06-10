@@ -51,6 +51,12 @@ export default async (req, res) => {
       });
     }
     const { eventData, sessionData } = payload;
+    if (!eventData || !sessionData) {
+      return res.status(401).json({
+        success: false,
+        error: "Invalid data. Expected event and session data.",
+      });
+    }
     try {
       // Create event
       const event = await databases.createDocument(
@@ -60,27 +66,16 @@ export default async (req, res) => {
         eventData
       );
       if (event.error) throw Error(event.error);
-      const sessionIds = [];
       // // Create session
       for (const session of sessionData) {
         session.eventId = event.$id; // Add the event ID to each session
-        const sessionDoc = await databases.createDocument(
+        await databases.createDocument(
           databaseID,
           sessionCollectionId,
           ID.unique(),
           session
         );
-        sessionIds.push(sessionDoc.$id); // Add session ID to the array (to be added to the event collection to denormalize it)
       }
-
-      await databases.updateDocument(
-        event.$databaseId,
-        event.$collectionId,
-        event.$id,
-        {
-          sessions: sessionIds,
-        }
-      );
 
       res.status(201).json({ success: true, error: null });
     } catch (error) {
