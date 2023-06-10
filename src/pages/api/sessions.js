@@ -11,8 +11,6 @@ export default async (req, res) => {
   const { data } = payload;
   const databaseID = process.env.APPWRITE_DATABASE_ID;
   const sessionCollectionId = process.env.SESSION_COLLECTION_ID;
-  const eventCollectionID = process.env.EVENT_COLLECTION_ID;
-  const speakerCollectionId = process.env.SPEAKER_COLLECTION_ID;
   const { sessionId, eventId } = req.query;
 
   if (req.method.toUpperCase() == "GET") {
@@ -24,65 +22,20 @@ export default async (req, res) => {
           sessionCollectionId,
           sessionId
         );
-
-        // Fetch speaker data for each session
-        let sessionSpeakers = [];
-        if (session.speakers && session.speakers.length > 0) {
-          const promises = session.speakers.map((speakerId) =>
-            databases.getDocument("speakersCollectionId", speakerId)
-          );
-          sessionSpeakers = await Promise.all(promises);
-        }
-
-        // Add the speaker data to the session object
-        const sessionWithSpeakers = {
-          ...session,
-          speakers: sessionSpeakers,
-        };
         return res.status(200).json({
-          data: sessionWithSpeakers,
+          data: session,
           error: null,
         });
       }
       // Else return all documents for that event
       if (eventId) {
-        const event = await databases.getDocument(
+        const sessions = await databases.listDocuments(
           databaseID,
-          eventCollectionID,
-          eventId
+          sessionCollectionId,
+          [Query.equal("eventId", [eventId])]
         );
-        const sessions = event.sessions;
 
-        // Get all the sessions for that event
-        const promises = sessions.map((id) => {
-          return databases
-            .getDocument(databaseID, sessionCollectionId, id)
-            .then((session) => {
-              if (session.speakers && session.speakers.length > 0) {
-                const speakerPromises = session.speakers.map((speakerId) =>
-                  databases.getDocument(
-                    databaseID,
-                    speakerCollectionId,
-                    speakerId
-                  )
-                );
-                return Promise.all(speakerPromises).then((speakers) => {
-                  session.speakers = speakers;
-                  return session;
-                });
-              } else {
-                return session;
-              }
-            })
-            .catch((error) => {
-              console.log(error);
-              return [];
-            });
-        });
-
-        const documents = await Promise.all(promises);
-
-        return res.status(200).json({ data: documents, error: null });
+        return res.status(200).json({ data: sessions, error: null });
       }
       res.status(400).json({
         data: null,
@@ -114,7 +67,7 @@ export default async (req, res) => {
     }
   }
   if (req.method.toUpperCase() == "DELETE") {
-    const { sessionId, eventId } = req.query;
+    const { sessionId } = req.query;
     try {
       // Delete session document from session collection
       await databases.deleteDocument(
