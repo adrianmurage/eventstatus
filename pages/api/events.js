@@ -1,4 +1,4 @@
-import { Client, Databases, ID } from "appwrite";
+import { Client, Databases, ID, Query } from "appwrite";
 const client = new Client();
 client
   .setEndpoint("https://cloud.appwrite.io/v1") // Your API Endpoint
@@ -7,8 +7,6 @@ client
 const databases = new Databases(client);
 
 export default async (req, res) => {
-  const payload = JSON.parse(req.body || null);
-  const { eventData, sessionData } = payload;
   const databaseID = process.env.APPWRITE_DATABASE_ID;
   const eventCollectionID = process.env.EVENT_COLLECTION_ID;
   const sessionCollectionId = process.env.SESSION_COLLECTION_ID;
@@ -45,6 +43,14 @@ export default async (req, res) => {
   }
 
   if (req.method.toUpperCase() == "POST") {
+    const payload = JSON.parse(req.body || null);
+    if (!payload) {
+      return res.status(401).json({
+        success: false,
+        error: "Invalid data. Exoected event and session data.",
+      });
+    }
+    const { eventData, sessionData } = payload;
     try {
       // Create event
       const event = await databases.createDocument(
@@ -96,6 +102,34 @@ export default async (req, res) => {
       res.status(201).json({ success: true, error: null });
     } catch (error) {
       res.status(401).json({ success: false, error: error.toString() });
+    }
+  }
+
+  // Delete endpoint
+  if (req.method.toUpperCase() == "DELETE") {
+    const { eventId } = req.query;
+    try {
+      await databases.deleteDocument(databaseID, eventCollectionID, eventId);
+      // delete sessions associated with the event
+      const sessions = await databases.listDocuments(
+        databaseID,
+        sessionCollectionId,
+        [Query.equal("eventId", [eventId])]
+      );
+      if (sessions) {
+        const promises = sessions.documents.map(async (doc) => {
+          return await databases.deleteDocument(
+            databaseID,
+            sessionCollectionId,
+            doc.$id
+          );
+        });
+        Promise.all(promises);
+      }
+
+      res.status(200).json({ success: true, error: null });
+    } catch (error) {
+      res.status(500).json({ success: false, error: error.toString() });
     }
   }
 };
