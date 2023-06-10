@@ -9,15 +9,15 @@ export default function NewEvent() {
     activeSessionSubmission: 0,
   });
   const [eventDetails, setEventDetails] = useState({
-    eventName: '',
-    eventLocation: '',
-    eventDate: '',
-    eventStartTime: '',
-    eventEndTime: '',
+    eventName: 'micro conf',
+    eventLocation: 'nairobi',
+    eventDate: '2023-12-12',
+    eventStartTime: '08:00',
+    eventEndTime: '18:00',
   });
   const [sessionsDetailsArray, setSessionsDetailsArray] = useState([]);
 
-  function handleNewEventSubmit(currentSessionInfo) {
+  async function handleNewEventSubmit(currentSessionInfo) {
     let eventInfo = {
       eventData: {
         name: eventDetails.eventName,
@@ -35,6 +35,23 @@ export default function NewEvent() {
       sessionData: [...sessionsDetailsArray, currentSessionInfo],
     };
     console.log(eventInfo);
+
+    const endpoint = 'api/events';
+
+    const JSONData = JSON.stringify(eventInfo);
+
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSONData,
+    };
+
+    const response = await fetch(endpoint, options);
+    const result = await response.json();
+
+    console.log(result);
   }
 
   return (

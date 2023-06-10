@@ -43,7 +43,10 @@ export default async (req, res) => {
   }
 
   if (req.method.toUpperCase() == "POST") {
-    const payload = JSON.parse(req.body || null);
+    const requestBody = req.body
+    // const {eventData, sessionData} = requestBody 
+    // console.log({requestBody, eventData, sessionData})
+    const payload = req.body;
     if (!payload) {
       return res.status(401).json({
         success: false,

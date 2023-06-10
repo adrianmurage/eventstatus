@@ -37,7 +37,7 @@ function SessionDetailsForm({
       resourceLink: sessionSlidesLink,
       speakerName: speakerName,
       speakerTitle: speakerTitle,
-      speakerLinkedIn: speakerLinkedIn,
+      speakerLinkedin: speakerLinkedIn,
       speakerTwitter: speakerTwitter,
     };
 
@@ -51,10 +51,10 @@ function SessionDetailsForm({
       startTime: getISODateTime(eventDate,sessionStartTime),
       endTime: getISODateTime(eventDate, sessionEndTime),
       venue: sessionVenue,
-      sessionSlidesLink: sessionSlidesLink,
+      resourceLink: sessionSlidesLink,
       speakerName: speakerName,
       speakerTitle: speakerTitle,
-      speakerLinkedIn: speakerLinkedIn,
+      speakerLinkedin: speakerLinkedIn,
       speakerTwitter: speakerTwitter,
     };
 
