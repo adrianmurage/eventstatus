@@ -27,13 +27,13 @@ export default async (req, res) => {
       }
       // Else return all documents for that event
       if (eventId) {
-        const sessions = await databases.listDocuments(
+        const { documents } = await databases.listDocuments(
           databaseID,
           sessionCollectionId,
           [Query.equal("eventId", eventId)]
         );
 
-        return res.status(200).json({ data: sessions, error: null });
+        return res.status(200).json({ data: documents, error: null });
       }
       res.status(400).json({
         data: null,
