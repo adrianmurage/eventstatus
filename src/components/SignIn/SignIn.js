@@ -1,12 +1,13 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { UseUser } from "../../hooks/User";
+import ErrorMessage from "../ErrorMessage/ErrorMessage";
 import FormInput from "../FormInput/FormInput";
 
 function SignIn() {
   const router = useRouter();
 
-  const { login, user: authenticatedUser } = UseUser();
+  const { login, user: authenticatedUser, error: authError } = UseUser();
 
   const [user, setUser] = useState({
     email: "",
@@ -20,11 +21,6 @@ function SignIn() {
     event.preventDefault();
     try {
       await login(user.email, user.password);
-      setUser({
-        email: "",
-        password: "",
-        confirmPassword: "",
-      });
     } catch (error) {
       seterror("An error occured. Please try again later.");
     }
@@ -45,6 +41,7 @@ function SignIn() {
     <div>
       <h1 className="text-2xl">Sign In</h1>
       {error}
+      {authError ? <ErrorMessage message={authError} /> : ""}
       <form onSubmit={handleSubmit}>
         <FormInput
           label="Email"

@@ -1,5 +1,6 @@
 import { UseUser } from "@/hooks/User";
 import { useState } from "react";
+import ErrorMessage from "../ErrorMessage/ErrorMessage";
 import FormInput from "../FormInput/FormInput";
 
 function SignUp() {
@@ -15,12 +16,6 @@ function SignUp() {
     event.preventDefault();
     try {
       await signup(user.email, user.password);
-
-      setUser({
-        email: "",
-        password: "",
-        confirmPassword: "",
-      });
     } catch (err) {
       seterror(err.message);
     }
@@ -42,7 +37,7 @@ function SignUp() {
     <div>
       <h1 className="text-2xl">Sign up </h1>
       {error}
-      {authError ? authError : ""}
+      {authError ? <ErrorMessage message={authError} /> : ""}
       <form onSubmit={handleSubmit}>
         <FormInput
           label="Email"
