@@ -29,7 +29,7 @@ export default function Page({ event, sessions }) {
 }
 export async function getStaticPaths() {
   // Call API endpoint to get events
-  const res = await fetch(`http://localhost:3000/api/events`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/events`);
   const events = await res.json();
 
   // Get the paths we want to prerender based on event ids
