@@ -14,7 +14,7 @@ function SignUp() {
     event.preventDefault();
     try {
       const newUser = await createUser(user.email, user.password);
-      if (!newUser.id) throw Error();
+      if (!newUser.$id) throw Error();
       setUser({
         email: "",
         password: "",
@@ -39,7 +39,7 @@ function SignUp() {
   };
   return (
     <div>
-      <h1 className="text-2xl">Sign up with your email and password</h1>
+      <h1 className="text-2xl">Sign up </h1>
       {error}
       <form onSubmit={handleSubmit}>
         <FormInput
