@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import React from 'react';
 import { useState } from 'react';
 
@@ -14,6 +15,11 @@ function EventDetailsForm({
   eventDetails,
   setEventDetails,
 }) {
+  const router = useRouter()
+  const handleCancel = (e) => {
+    e.preventDefault()
+    router.push('/')
+  }
   if (formSubmissionProgress.activeForm !== 0) return;
 
   return (
@@ -136,7 +142,11 @@ function EventDetailsForm({
         </div>
 
         <div className="form-control space-y-6 pb-10 pt-5">
-          <button type="button" className="btn capitalize">
+          <button
+            type="button"
+            className="btn capitalize"
+            onClick={handleCancel}
+          >
             Cancel
           </button>
           <button type="submit" className="btn capitalize">
