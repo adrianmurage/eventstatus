@@ -2,6 +2,7 @@ import Sessions from "../../components/Sessions/Sessions";
 import { getCapitalizedString, getDate } from "../../utils";
 
 export default function Page({ event, sessions }) {
+  console.log(process.env.NEXT_PUBLIC_BASE_URL);
   if (!event) {
     return <div>No event was found</div>;
   }
@@ -49,7 +50,7 @@ export async function getStaticProps({ params }) {
 
   const event = await eventRepsponse.json();
   const sessionResponse = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/sessions?eventId=${params.id}`
+    `${process.env.NEXT_PUBLIC_BASE_URL}api/sessions?eventId=${params.id}`
   );
   const sessions = await sessionResponse.json();
 
