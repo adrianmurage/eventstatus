@@ -1,16 +1,10 @@
-import { Client, Databases, ID, Query } from "appwrite";
-const client = new Client();
-client
-  .setEndpoint("https://cloud.appwrite.io/v1") // Your API Endpoint
-  .setProject("647b927f416135cd4ef0"); // Your project ID
-
-const databases = new Databases(client);
+import { databases } from '../../utils/appwrite';
 
 export default async (req, res) => {
   const databaseID = process.env.APPWRITE_DATABASE_ID;
   const eventCollectionID = process.env.EVENT_COLLECTION_ID;
   const sessionCollectionId = process.env.SESSION_COLLECTION_ID;
-  if (req.method.toUpperCase() == "GET") {
+  if (req.method.toUpperCase() == 'GET') {
     const { id } = req.query;
     try {
       // If id is pecified in query param, return the document associated with that id
@@ -42,22 +36,22 @@ export default async (req, res) => {
     }
   }
 
-  if (req.method.toUpperCase() == "POST") {
-    const requestBody = req.body
-    // const {eventData, sessionData} = requestBody 
+  if (req.method.toUpperCase() == 'POST') {
+    const requestBody = req.body;
+    // const {eventData, sessionData} = requestBody
     // console.log({requestBody, eventData, sessionData})
     const payload = req.body;
     if (!payload) {
       return res.status(401).json({
         success: false,
-        error: "Invalid data. Exoected event and session data.",
+        error: 'Invalid data. Exoected event and session data.',
       });
     }
     const { eventData, sessionData } = payload;
     if (!eventData || !sessionData) {
       return res.status(401).json({
         success: false,
-        error: "Invalid data. Expected event and session data.",
+        error: 'Invalid data. Expected event and session data.',
       });
     }
     try {
@@ -86,13 +80,13 @@ export default async (req, res) => {
     }
   }
 
-  if (req.method.toUpperCase() == "PATCH") {
+  if (req.method.toUpperCase() == 'PATCH') {
     const payload = JSON.parse(req.body || null);
     const { id, data } = payload;
     if (!id || !data)
       return res
         .status(401)
-        .json({ success: false, error: "Missing event ID and update data" });
+        .json({ success: false, error: 'Missing event ID and update data' });
 
     try {
       // Update event
@@ -104,7 +98,7 @@ export default async (req, res) => {
   }
 
   // Delete endpoint
-  if (req.method.toUpperCase() == "DELETE") {
+  if (req.method.toUpperCase() == 'DELETE') {
     const { eventId } = req.query;
     try {
       await databases.deleteDocument(databaseID, eventCollectionID, eventId);
@@ -112,7 +106,7 @@ export default async (req, res) => {
       const sessions = await databases.listDocuments(
         databaseID,
         sessionCollectionId,
-        [Query.equal("eventId", [eventId])]
+        [Query.equal('eventId', [eventId])]
       );
       if (sessions) {
         const promises = sessions.documents.map(async (doc) => {
