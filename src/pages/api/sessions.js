@@ -1,4 +1,4 @@
-import { Client, Databases } from "appwrite";
+import { Client, Databases, Query } from "appwrite";
 const client = new Client();
 client
   .setEndpoint("https://cloud.appwrite.io/v1") // Your API Endpoint
@@ -7,13 +7,11 @@ client
 const databases = new Databases(client);
 
 export default async (req, res) => {
-  const payload = JSON.parse(req.body || null);
-  const { data } = payload;
   const databaseID = process.env.APPWRITE_DATABASE_ID;
   const sessionCollectionId = process.env.SESSION_COLLECTION_ID;
-  const { sessionId, eventId } = req.query;
 
   if (req.method.toUpperCase() == "GET") {
+    const { sessionId, eventId } = req.query;
     try {
       // If id is specified in query param, return the document associated with that id
       if (sessionId) {
@@ -29,13 +27,13 @@ export default async (req, res) => {
       }
       // Else return all documents for that event
       if (eventId) {
-        const sessions = await databases.listDocuments(
+        const { documents } = await databases.listDocuments(
           databaseID,
           sessionCollectionId,
-          [Query.equal("eventId", [eventId])]
+          [Query.equal("eventId", eventId)]
         );
 
-        return res.status(200).json({ data: sessions, error: null });
+        return res.status(200).json({ data: documents, error: null });
       }
       res.status(400).json({
         data: null,
@@ -51,6 +49,8 @@ export default async (req, res) => {
   }
 
   if (req.method.toUpperCase() == "PATCH") {
+    const payload = JSON.parse(req.body || null);
+    const { data } = payload;
     try {
       // Update session
 

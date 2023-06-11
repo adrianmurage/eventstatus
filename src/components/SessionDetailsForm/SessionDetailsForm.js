@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
-import { getISODateTime } from '../../utils';
+import { getISODateTime } from '../../utils/utils';
 
 function SessionDetailsForm({
   formSubmissionProgress,
