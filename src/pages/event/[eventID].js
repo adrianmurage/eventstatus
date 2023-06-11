@@ -3,7 +3,7 @@ import {
   databaseID,
   databases,
   eventCollectionID,
-  sessionCollectionId,
+  sessionCollectionID,
 } from '../../utils/appwrite';
 import EventCard from '../../components/EventCard/EventCard';
 
@@ -57,7 +57,7 @@ export const getServerSideProps = async ({ params }) => {
 
   const sessionData = await databases.listDocuments(
     databaseID,
-    sessionCollectionId,
+    sessionCollectionID,
     [Query.equal("eventId", eventID)]
   );
 

@@ -45,7 +45,7 @@ export default async (req, res) => {
     if (!payload) {
       return res.status(401).json({
         success: false,
-        error: 'Invalid data. Exoected event and session data.',
+        error: 'Invalid data. Expected event and session data.',
       });
     }
     const { eventData, sessionData } = payload;
