@@ -1,8 +1,9 @@
-import React, { useState } from "react";
-import { createUser } from "../../utils/db";
+import { UseUser } from "@/hooks/User";
+import { useState } from "react";
 import FormInput from "../FormInput/FormInput";
 
 function SignUp() {
+  const { signup, error: authError } = UseUser();
   const [user, setUser] = useState({
     email: "",
     password: "",
@@ -13,15 +14,15 @@ function SignUp() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const newUser = await createUser(user.email, user.password);
-      if (!newUser.$id) throw Error();
+      await signup(user.email, user.password);
+
       setUser({
         email: "",
         password: "",
         confirmPassword: "",
       });
-    } catch (error) {
-      seterror("An error occured during sign up. Please try again later.");
+    } catch (err) {
+      seterror(err.message);
     }
   };
   const handleChange = (e) => {
@@ -41,6 +42,7 @@ function SignUp() {
     <div>
       <h1 className="text-2xl">Sign up </h1>
       {error}
+      {authError ? authError : ""}
       <form onSubmit={handleSubmit}>
         <FormInput
           label="Email"

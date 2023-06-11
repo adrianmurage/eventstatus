@@ -1,7 +1,5 @@
 import {
-  ID,
   Query,
-  account,
   databaseID,
   databases,
   eventCollectionID,
@@ -32,20 +30,4 @@ export const getAllSessionsInEvent = async (eventId) => {
   );
 
   return documents;
-};
-
-export const createUser = async (email, password) => {
-  return account.create(ID.unique(), email, password);
-};
-
-export const loginUser = (email, password) => {
-  return account.createEmailSession(email, password);
-};
-
-export const getCurrentUser = () => {
-  return account.get();
-};
-
-export const logoutUser = () => {
-  return account.deleteSession("current");
 };
