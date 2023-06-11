@@ -15,6 +15,11 @@ function SignUp() {
     try {
       const newUser = await createUser(user.email, user.password);
       if (!newUser.id) throw Error();
+      setUser({
+        email: "",
+        password: "",
+        confirmPassword: "",
+      });
     } catch (error) {
       seterror("An error occured during sign up. Please try again later.");
     }
