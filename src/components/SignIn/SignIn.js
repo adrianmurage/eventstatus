@@ -1,20 +1,25 @@
-import React, { useState } from "react";
-import { loginUser } from "../../utils/db";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import { UseUser } from "../../hooks/User";
 import FormInput from "../FormInput/FormInput";
 
 function SignIn() {
+  const router = useRouter();
+
+  const { login, user: authenticatedUser } = UseUser();
+
   const [user, setUser] = useState({
     email: "",
     password: "",
     confirmPassword: "",
   });
-  const [passwordMatch, setPasswordMatch] = useState(true);
+
   const [error, seterror] = useState("");
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const loggedinUser = await loginUser(user.email, user.password);
-      if (!loggedinUser.$id) throw Error();
+      await login(user.email, user.password);
       setUser({
         email: "",
         password: "",
@@ -30,6 +35,11 @@ function SignIn() {
       [e.target.name]: e.target.value,
     });
   };
+
+  if (authenticatedUser) {
+    router.push("/");
+    return;
+  }
 
   return (
     <div>
