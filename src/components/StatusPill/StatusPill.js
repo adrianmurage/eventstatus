@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { calculateStatus } from "../../utils";
+import { calculateStatus } from "../../utils/utils";
 
 function StatusPill({ startTime, endTime }) {
   const [status, setStatus] = useState("");

@@ -4,7 +4,7 @@ import {
   TwitterLogoIcon,
 } from "@radix-ui/react-icons";
 import { useRef } from "react";
-import { getTime } from "../../utils";
+import { getTime } from "../../utils/utils";
 import StatusPill from "../StatusPill/StatusPill";
 
 function SessionCard({
