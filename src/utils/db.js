@@ -39,7 +39,7 @@ export const createUser = async (email, password) => {
 };
 
 export const loginUser = (email, password) => {
-  return account.createSession(email, password);
+  return account.createEmailSession(email, password);
 };
 
 export const getCurrentUser = () => {
