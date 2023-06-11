@@ -42,14 +42,14 @@ export async function getStaticPaths() {
 export async function getStaticProps({ params }) {
   // Call an API endpoint to get events.
   const eventRepsponse = await fetch(
-    `http://localhost:3000/api/events?id=${params.id}`
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/events?id=${params.id}`
   );
 
   // Call an API endpoint to get sessions.
 
   const event = await eventRepsponse.json();
   const sessionResponse = await fetch(
-    `http://localhost:3000/api/sessions?eventId=${params.id}`
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/sessions?eventId=${params.id}`
   );
   const sessions = await sessionResponse.json();
 
