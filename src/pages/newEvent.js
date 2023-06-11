@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import EventDetailsForm from '../components/EventDetailsForm/EventDetailsForm';
 import SessionDetailsForm from '../components/SessionDetailsForm/SessionDetailsForm';
-import { getISODateTime } from '../utils';
+import { getISODateTime } from '../utils/utils';
 
 export default function NewEvent() {
   const [formSubmissionProgress, setFormSubmissionProgress] = useState({
@@ -75,3 +75,5 @@ export default function NewEvent() {
     </>
   );
 }
+
+
