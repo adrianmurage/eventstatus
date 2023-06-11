@@ -11,7 +11,11 @@ export default function Home({ eventList }) {
       </Link>
       <div className="space-y-4">
         {eventList.map((singleEvent) => (
-          <EventCard key={singleEvent.$id} eventName={singleEvent.name} />
+          <EventCard
+            key={singleEvent.$id}
+            eventName={singleEvent.name}
+            eventLink={`/event/${singleEvent.$id}`}
+          />
         ))}
       </div>
     </>

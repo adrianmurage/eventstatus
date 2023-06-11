@@ -13,7 +13,7 @@ export default function NewEvent() {
     eventLocation: 'nairobi',
     eventDate: '2023-12-12',
     eventStartTime: '08:00',
-    eventEndTime: '18:00',
+    eventEndTime: '12:00',
   });
   const [sessionsDetailsArray, setSessionsDetailsArray] = useState([]);
 
@@ -52,6 +52,7 @@ export default function NewEvent() {
     const result = await response.json();
 
     console.log(result);
+    return result;
   }
 
   return (
@@ -75,5 +76,3 @@ export default function NewEvent() {
     </>
   );
 }
-
-
