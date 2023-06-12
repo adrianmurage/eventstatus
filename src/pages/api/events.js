@@ -38,9 +38,6 @@ export default async (req, res) => {
   }
 
   if (req.method.toUpperCase() == 'POST') {
-    const requestBody = req.body;
-    // const {eventData, sessionData} = requestBody
-    // console.log({requestBody, eventData, sessionData})
     const payload = req.body;
     if (!payload) {
       return res.status(401).json({
@@ -82,7 +79,7 @@ export default async (req, res) => {
   }
 
   if (req.method.toUpperCase() == 'PATCH') {
-    const payload = JSON.parse(req.body || null);
+    const payload = req.body;
     const { id, data } = payload;
     if (!id || !data)
       return res

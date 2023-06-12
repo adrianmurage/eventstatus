@@ -6,11 +6,13 @@ import {
   sessionCollectionID,
 } from '../../utils/appwrite';
 import EventCard from '../../components/EventCard/EventCard';
+import EditEventForm from '../../components/EditEventForm/EditEventForm';
+import { useState } from 'react';
 
 export default function EventPage({ eventId, eventData, sessionData }) {
   console.log({ eventId });
   console.log({ eventData });
-  console.log({sessionData})
+  console.log({ sessionData });
 
   const { date, startTime, endTime, venue } = eventData;
 
@@ -34,13 +36,21 @@ export default function EventPage({ eventId, eventData, sessionData }) {
           <div>{relevantData[key]}</div>
         </div>
       ))}
-
-      {sessionData.documents.map(session=>(
+      <button
+        className="btn capitalize"
+        onClick={() => window.my_modal_1.showModal()}
+      >
+        Edit event
+      </button>
+      <dialog id="my_modal_1" className="modal">
+        <EditEventForm eventDetails={eventData} />
+      </dialog>
+      {sessionData.documents.map((session) => (
         <EventCard
-        key={session.$id}
-        eventName={session.name}
-        eventLink={`/event/session/${session.$id}`}
-      />
+          key={session.$id}
+          eventName={session.name}
+          eventLink={`/event/session/${session.$id}`}
+        />
       ))}
     </>
   );
@@ -58,7 +68,7 @@ export const getServerSideProps = async ({ params }) => {
   const sessionData = await databases.listDocuments(
     databaseID,
     sessionCollectionID,
-    [Query.equal("eventId", eventID)]
+    [Query.equal('eventId', eventID)]
   );
 
   return {

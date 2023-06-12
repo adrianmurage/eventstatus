@@ -1,13 +1,7 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 import { useState } from 'react';
-
-function getCurrentDate() {
-  const date = new Date();
-  const ISODate = date.toISOString().substring(0, 10);
-
-  return ISODate;
-}
+import { getCurrentDate } from '../../utils/utils';
 
 function EventDetailsForm({
   formSubmissionProgress,
@@ -15,11 +9,11 @@ function EventDetailsForm({
   eventDetails,
   setEventDetails,
 }) {
-  const router = useRouter()
+  const router = useRouter();
   const handleCancel = (e) => {
-    e.preventDefault()
-    router.push('/')
-  }
+    e.preventDefault();
+    router.push('/');
+  };
   if (formSubmissionProgress.activeForm !== 0) return;
 
   return (
