@@ -1,3 +1,5 @@
+import { UseUser } from '@/hooks/User';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import EventDetailsForm from '../components/EventDetailsForm/EventDetailsForm';
 import SessionDetailsForm from '../components/SessionDetailsForm/SessionDetailsForm';
@@ -50,8 +52,7 @@ export default function NewEvent() {
 
     const response = await fetch(endpoint, options);
     const result = await response.json();
-
-    console.log(result);
+    return result;
   }
 
   return (
@@ -75,5 +76,3 @@ export default function NewEvent() {
     </>
   );
 }
-
-
