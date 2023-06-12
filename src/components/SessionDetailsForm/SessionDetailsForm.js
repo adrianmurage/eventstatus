@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import { getISODateTime } from '../../utils/utils';
+import { useRouter } from 'next/router';
 
 function SessionDetailsForm({
   formSubmissionProgress,
@@ -10,16 +11,26 @@ function SessionDetailsForm({
   handleNewEventSubmit,
   eventDate,
 }) {
-  const [sessionName, setSessionName] = useState('');
-  const [sessionStartTime, setSessionStartTime] = useState('');
-  const [sessionEndTime, setSessionEndTime] = useState('');
-  const [sessionSlidesLink, setSessionSlidesLink] = useState('');
-  const [sessionVenue, setSessionVenue] = useState('');
+  const [sessionName, setSessionName] = useState('Bootstrapping 101');
+  const [sessionStartTime, setSessionStartTime] = useState('09:00');
+  const [sessionEndTime, setSessionEndTime] = useState('10:00');
+  const [sessionSlidesLink, setSessionSlidesLink] =
+    useState('https://slides.com');
+  const [sessionVenue, setSessionVenue] = useState('room 101');
 
-  const [speakerName, setSpeakerName] = useState('');
-  const [speakerTitle, setSpeakerTitle] = useState('');
-  const [speakerLinkedIn, setSpeakerLinkedIn] = useState('');
-  const [speakerTwitter, setSpeakerTwitter] = useState('');
+  const [speakerName, setSpeakerName] = useState('Adrian Murage');
+  const [speakerTitle, setSpeakerTitle] = useState('Founder 47 Places');
+  const [speakerLinkedIn, setSpeakerLinkedIn] = useState(
+    'https://linkedin.com'
+  );
+  const [speakerTwitter, setSpeakerTwitter] = useState('https://twitter.com');
+
+  //idle  | loading | success | error
+  const [status, setStatus] = useState('idle');
+
+  const router = useRouter();
+
+  const firstInputRef = React.useRef();
 
   if (formSubmissionProgress.activeForm !== 1) return;
 
@@ -32,8 +43,14 @@ function SessionDetailsForm({
     newSessionsDetailsArray[currentSession] = {
       name: sessionName,
       venue: sessionVenue,
-      startTime: getISODateTime(eventDate,sessionStartTime),
-      endTime: getISODateTime(eventDate, sessionEndTime),
+      startTime:
+        sessionStartTime === ''
+          ? null
+          : getISODateTime(eventDate, sessionStartTime),
+      endTime:
+        sessionEndTime === ''
+          ? null
+          : getISODateTime(eventDate, sessionEndTime),
       resourceLink: sessionSlidesLink,
       speakerName: speakerName,
       speakerTitle: speakerTitle,
@@ -45,10 +62,12 @@ function SessionDetailsForm({
     setSessionsDetailsArray(newSessionsDetailsArray);
   }
 
-  function handleSubmit() {
+  async function handleSubmit(event) {
+    event.preventDefault();
+
     let currentSessionInfo = {
       name: sessionName,
-      startTime: getISODateTime(eventDate,sessionStartTime),
+      startTime: getISODateTime(eventDate, sessionStartTime),
       endTime: getISODateTime(eventDate, sessionEndTime),
       venue: sessionVenue,
       resourceLink: sessionSlidesLink,
@@ -58,7 +77,29 @@ function SessionDetailsForm({
       speakerTwitter: speakerTwitter,
     };
 
-    handleNewEventSubmit(currentSessionInfo);
+    const result = await handleNewEventSubmit(currentSessionInfo);
+
+    if (result.success) {
+      setStatus('success');
+    } else {
+      setStatus('error');
+    }
+  }
+
+  if (status === 'success') {
+    return (
+      <>
+        <p>Event Created!</p>
+        <button
+          onClick={() => {
+            router.push('/');
+          }}
+          className="btn capitalize"
+        >
+          See my events
+        </button>
+      </>
+    );
   }
 
   return (
@@ -68,8 +109,9 @@ function SessionDetailsForm({
       <form
         className="space-y-6"
         onSubmit={(event) => {
-          event.preventDefault();
-          handleSubmit();
+          setStatus('loading');
+
+          handleSubmit(event);
         }}
       >
         <h2 className="font-bold">General Session Information</h2>
@@ -81,7 +123,9 @@ function SessionDetailsForm({
             </span>
           </label>
           <input
+            ref={firstInputRef}
             required
+            disabled={status === 'loading'}
             type="text"
             className="input input-bordered w-full max-w-xs"
             value={sessionName}
@@ -98,6 +142,7 @@ function SessionDetailsForm({
           </label>
           <input
             required
+            disabled={status === 'loading'}
             type="time"
             className="input input-bordered w-full max-w-xs"
             value={sessionStartTime}
@@ -112,6 +157,7 @@ function SessionDetailsForm({
           </label>
           <input
             required
+            disabled={status === 'loading'}
             type="time"
             className="input input-bordered w-full max-w-xs"
             value={sessionEndTime}
@@ -126,6 +172,7 @@ function SessionDetailsForm({
           </label>
           <input
             required
+            disabled={status === 'loading'}
             type="text"
             className="input input-bordered w-full max-w-xs"
             value={sessionVenue}
@@ -142,6 +189,7 @@ function SessionDetailsForm({
           </label>
           <input
             required
+            disabled={status === 'loading'}
             type="url"
             className="input input-bordered w-full max-w-xs"
             value={sessionSlidesLink}
@@ -164,6 +212,7 @@ function SessionDetailsForm({
           </label>
           <input
             required
+            disabled={status === 'loading'}
             type="text"
             className="input input-bordered w-full max-w-xs"
             value={speakerName}
@@ -179,6 +228,7 @@ function SessionDetailsForm({
           </label>
           <input
             required
+            disabled={status === 'loading'}
             type="text"
             className="input input-bordered w-full max-w-xs"
             value={speakerTitle}
@@ -194,6 +244,7 @@ function SessionDetailsForm({
           </label>
           <input
             required
+            disabled={status === 'loading'}
             type="url"
             className="input input-bordered w-full max-w-xs"
             value={speakerLinkedIn}
@@ -214,6 +265,7 @@ function SessionDetailsForm({
           </label>
           <input
             required
+            disabled={status === 'loading'}
             type="url"
             className="input input-bordered w-full max-w-xs"
             value={speakerTwitter}
@@ -229,6 +281,7 @@ function SessionDetailsForm({
         </div>
 
         <button
+          disabled={status === 'loading'}
           type="button"
           value="add another session"
           className="btn capitalize btn-outline"
@@ -255,6 +308,17 @@ function SessionDetailsForm({
             setSpeakerTitle('');
             setSpeakerLinkedIn('');
             setSpeakerTwitter('');
+            setSessionVenue('');
+
+            //set the focus to the first input element
+            firstInputRef.current.scrollIntoView({
+              behavior: 'smooth',
+              block: 'end',
+              inline: 'nearest',
+            });
+            setTimeout(() => {
+              firstInputRef.current.focus();
+            }, 1000);
           }}
         >
           <span className="text-2xl"> &#43;</span>
@@ -262,9 +326,21 @@ function SessionDetailsForm({
         </button>
 
         <div className="form-control space-y-6 pb-10 pt-5 ">
-          <button type="submit" value="finish" className="btn capitalize">
-            Finish
-          </button>
+          {status === 'idle' && (
+            <button
+              disabled={status === 'loading'}
+              type="submit"
+              className="btn capitalize"
+            >
+              Create Event
+            </button>
+          )}
+          {status === 'loading' && (
+            <button className="btn">
+              <span className="loading loading-spinner"></span>
+              Creating Event
+            </button>
+          )}
         </div>
       </form>
     </>
