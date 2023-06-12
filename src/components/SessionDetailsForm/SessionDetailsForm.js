@@ -336,7 +336,7 @@ function SessionDetailsForm({
             </button>
           )}
           {status === 'loading' && (
-            <button className="btn">
+            <button className="btn" disabled={status === 'loading'}>
               <span className="loading loading-spinner"></span>
               Creating Event
             </button>

@@ -38,11 +38,11 @@ export default function EventPage({ eventId, eventData, sessionData }) {
       ))}
       <button
         className="btn capitalize"
-        onClick={() => window.my_modal_1.showModal()}
+        onClick={() => window.edit_event_modal.showModal()}
       >
         Edit event
       </button>
-      <dialog id="my_modal_1" className="modal">
+      <dialog id="edit_event_modal" className="modal">
         <EditEventForm eventDetails={eventData} />
       </dialog>
       {sessionData.documents.map((session) => (

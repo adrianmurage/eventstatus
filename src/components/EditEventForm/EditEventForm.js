@@ -208,7 +208,7 @@ function EditEventForm({ eventDetails }) {
                 type="button"
                 className="btn capitalize"
                 onClick={() => {
-                  window.my_modal_1.close();
+                  window.edit_event_modal.close();
                 }}
               >
                 Cancel
@@ -223,7 +223,7 @@ function EditEventForm({ eventDetails }) {
                 </button>
               )}
               {status === 'loading' && (
-                <button className="btn">
+                <button className="btn" disabled={status === 'loading'}>
                   <span className="loading loading-spinner"></span>
                   Saving
                 </button>
