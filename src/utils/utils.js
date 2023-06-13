@@ -14,6 +14,29 @@ export function formatTimeForInput(ISOString) {
   return time;
 }
 
+export function formatToHumanReadableTime(ISOString) {
+  let dateTime = new Date(ISOString);
+  let time = dateTime.toLocaleTimeString([], {
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+
+  return time;
+}
+
+export function formatToHumanReadableDate(ISOString) {
+  const dateOptions = {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  };
+
+  let dateTime = new Date(ISOString);
+  let date = dateTime.toLocaleDateString(undefined, dateOptions);
+
+  return date;
+}
+
 export function formatDateForInput(isoDateString) {
   const date = new Date(isoDateString);
   const year = date.getFullYear();
