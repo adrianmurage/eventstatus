@@ -1,4 +1,3 @@
-import React from "react";
 import SessionCard from "../SessionCard/SessionCard";
 function Sessions({ sessions }) {
   return (
@@ -19,6 +18,7 @@ function Sessions({ sessions }) {
               speakerLinkedin={session.speakerLinkedin}
               speakerName={session.speakerName}
               resourceLink={session.resourceLink}
+              speakerImage={session.speakerImage}
             />
           </div>
         );
