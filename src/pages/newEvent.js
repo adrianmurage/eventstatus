@@ -1,9 +1,7 @@
-import { UseUser } from '@/hooks/User';
-import { useRouter } from 'next/router';
-import { useState } from 'react';
-import EventDetailsForm from '../components/EventDetailsForm/EventDetailsForm';
-import SessionDetailsForm from '../components/SessionDetailsForm/SessionDetailsForm';
-import { getISODateTime } from '../utils/utils';
+import { useState } from "react";
+import EventDetailsForm from "../components/EventDetailsForm/EventDetailsForm";
+import SessionDetailsForm from "../components/SessionDetailsForm/SessionDetailsForm";
+import { getISODateTime } from "../utils/utils";
 
 export default function NewEvent() {
   const [formSubmissionProgress, setFormSubmissionProgress] = useState({
@@ -11,11 +9,11 @@ export default function NewEvent() {
     activeSessionSubmission: 0,
   });
   const [eventDetails, setEventDetails] = useState({
-    eventName: 'micro conf',
-    eventLocation: 'nairobi',
-    eventDate: '2023-12-12',
-    eventStartTime: '08:00',
-    eventEndTime: '18:00',
+    eventName: "micro conf",
+    eventLocation: "nairobi",
+    eventDate: "2023-12-12",
+    eventStartTime: "08:00",
+    eventEndTime: "18:00",
   });
   const [sessionsDetailsArray, setSessionsDetailsArray] = useState([]);
 
@@ -38,14 +36,14 @@ export default function NewEvent() {
     };
     console.log(eventInfo);
 
-    const endpoint = 'api/events';
+    const endpoint = "api/events";
 
     const JSONData = JSON.stringify(eventInfo);
 
     const options = {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSONData,
     };
