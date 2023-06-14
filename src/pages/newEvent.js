@@ -39,14 +39,14 @@ export default function NewEvent() {
     };
     console.log(eventInfo);
 
-    const endpoint = 'api/events';
+    const endpoint = "api/events";
 
     const JSONData = JSON.stringify(eventInfo);
 
     const options = {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSONData,
     };

@@ -1,9 +1,13 @@
 import {
+  ID,
   Query,
+  bucketId,
   databaseID,
   databases,
   eventCollectionID,
+  projectId,
   sessionCollectionID,
+  storage,
 } from "./appwrite";
 
 export const getAllEvents = async () => {
@@ -30,4 +34,14 @@ export const getAllSessionsInEvent = async (eventId) => {
   );
 
   return documents;
+};
+
+export const uploadImageToBucket = async (file) => {
+  try {
+    const response = await storage.createFile(bucketId, ID.unique(), file);
+    const url = `https://cloud.appwrite.io/v1/storage/buckets/${response.bucketId}/files/${response.$id}/view?project=${projectId}`;
+    return url;
+  } catch (error) {
+    return null;
+  }
 };
