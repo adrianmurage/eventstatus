@@ -12,8 +12,7 @@ export default function PrivateRoute({ protectedRoutes, children }) {
 
   useEffect(() => {
     if (!loading && !user && pathIsProtected) {
-      // Redirect route, you can point this to /login
-      router.push("/");
+      router.push("/auth/signin");
     }
   }, [loading, user, pathIsProtected]);
 
