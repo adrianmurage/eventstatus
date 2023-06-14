@@ -3,7 +3,7 @@ import { UserProvider } from "../hooks/User";
 import "../styles/globals.css";
 
 function MyApp({ Component, pageProps }) {
-  const protectedRoutes = ["/newEvent"];
+  const protectedRoutes = ["/newEvent", "/dashboard"];
   return (
     <UserProvider>
       <ProtectedRoute protectedRoutes={protectedRoutes}>

@@ -35,7 +35,7 @@ export const UserProvider = ({ children }) => {
     try {
       await account.createEmailSession(email, password);
       await loadAccount();
-      router.push("/");
+      router.push("/dashboard");
     } catch (error) {
       console.error(error);
       setError(error.message);

@@ -6,14 +6,6 @@ import { useRouter } from 'next/router';
 import { databaseID, databases, eventCollectionID } from '../utils/appwrite';
 
 export default function Home({ eventList }) {
-  const { user, loading } = UseUser();
-  const router = useRouter();
-  if (loading) return;
-  // Redirect unauthenticated users to signin page
-  if (!loading && !user) {
-    router.push('/');
-    return;
-  }
   return (
     <>
       <Header />
