@@ -16,13 +16,13 @@ function EventCard({ eventDetails }) {
     <>
       <Link href={`/event/${eventDetails.$id}`}>
         <div className="card bg-base-100 drop-shadow-sm cursor-pointer text-left">
-          <div className="card-body space-y-6 px-5 py-5">
-            <h2 className="card-title text-lg capitalize">
+          <div className="card-body space-y-8 px-5 py-5">
+            <h2 className="card-title text-xl capitalize leading-tight pr-6">
               {eventDetails.name}
             </h2>
-            <div>
+            <div className="">
               <div className="flex justify-between items-end">
-                <div>
+                <div className="space-y-2">
                   <div className="flex items-center space-x-2">
                     <ClockIcon />
                     <span>
