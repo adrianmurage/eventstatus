@@ -18,7 +18,7 @@ export default function Home({ eventList }) {
     <>
       <Header />
       <DashboardHeader />
-      <EventsList eventList={eventList}/>
+      <EventsList eventList={eventList} />
     </>
   );
 }

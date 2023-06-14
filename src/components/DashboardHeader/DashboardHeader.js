@@ -8,7 +8,7 @@ function DashboardHeader() {
           <div className="flex justify-between items-baseline	">
             <h2 className="text-xl font-bold">Events</h2>
             <Link href="/newEvent">
-              <button className="btn bg-orange text-white capitalize">
+              <button className="btn capitalize btn-primary text-white">
                 <span className="text-2xl"> &#43;</span>
                 New Event
               </button>
