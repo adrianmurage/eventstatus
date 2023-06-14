@@ -8,14 +8,27 @@ import {
 } from '@radix-ui/react-icons';
 import Link from 'next/link';
 import React from 'react';
+import EditSessionForm from '../EditSessionForm/EditSessionForm';
+import EditSessionDropdown from '../EditSessionDropdown/EditSessionDropdown';
 
 function SingleSessionCard({ sessionDetails }) {
   console.log({ sessionDetails });
   return (
     <>
-      <Link href={`/event/session/${sessionDetails.$id}`}>
-        <div className="card bg-base-100 drop-shadow-sm cursor-pointer text-left">
-          <div className="card-body space-y-8 px-5 py-5">
+      <div className="card bg-base-100 drop-shadow-sm text-left">
+        <div className="card-body px-5 py-5">
+          <div>
+            <div className="flex justify-end">
+              <EditSessionDropdown sessionID={sessionDetails.$id} />
+              <dialog
+                id={`edit_session_${sessionDetails.$id}_modal`}
+                className="modal"
+              >
+                <EditSessionForm sessionDetails={sessionDetails} />
+              </dialog>
+            </div>
+          </div>
+          <div className=" space-y-8">
             <div className="flex justify-between items-start">
               <div>
                 <h2 className="card-title text-xl capitalize pr-4 leading-tight">
@@ -89,7 +102,7 @@ function SingleSessionCard({ sessionDetails }) {
             </div>
           </div>
         </div>
-      </Link>
+      </div>
     </>
   );
 }
