@@ -11,19 +11,16 @@ function SessionDetailsForm({
   handleNewEventSubmit,
   eventDate,
 }) {
-  const [sessionName, setSessionName] = useState('Bootstrapping 101');
-  const [sessionStartTime, setSessionStartTime] = useState('09:00');
-  const [sessionEndTime, setSessionEndTime] = useState('10:00');
-  const [sessionSlidesLink, setSessionSlidesLink] =
-    useState('https://slides.com');
-  const [sessionVenue, setSessionVenue] = useState('room 101');
+  const [sessionName, setSessionName] = useState('');
+  const [sessionStartTime, setSessionStartTime] = useState('');
+  const [sessionEndTime, setSessionEndTime] = useState('');
+  const [sessionSlidesLink, setSessionSlidesLink] = useState('');
+  const [sessionVenue, setSessionVenue] = useState('');
 
-  const [speakerName, setSpeakerName] = useState('Adrian Murage');
-  const [speakerTitle, setSpeakerTitle] = useState('Founder 47 Places');
-  const [speakerLinkedIn, setSpeakerLinkedIn] = useState(
-    'https://linkedin.com'
-  );
-  const [speakerTwitter, setSpeakerTwitter] = useState('https://twitter.com');
+  const [speakerName, setSpeakerName] = useState('');
+  const [speakerTitle, setSpeakerTitle] = useState('');
+  const [speakerLinkedIn, setSpeakerLinkedIn] = useState('');
+  const [speakerTwitter, setSpeakerTwitter] = useState('');
 
   //idle  | loading | success | error
   const [status, setStatus] = useState('idle');
@@ -87,19 +84,8 @@ function SessionDetailsForm({
   }
 
   if (status === 'success') {
-    return (
-      <>
-        <p>Event Created!</p>
-        <button
-          onClick={() => {
-            router.push('/');
-          }}
-          className="btn capitalize"
-        >
-          See my events
-        </button>
-      </>
-    );
+    router.push('/dashboard');
+    return;
   }
 
   return (
@@ -107,7 +93,7 @@ function SessionDetailsForm({
       <p>Great, we have an event! Let's add sessions to your event.</p>
       <div className="divider"></div>
       <form
-        className="space-y-6"
+        className="space-y-6 max-w-lg mx-auto"
         onSubmit={(event) => {
           setStatus('loading');
 
@@ -123,11 +109,12 @@ function SessionDetailsForm({
             </span>
           </label>
           <input
+            autoFocus
             ref={firstInputRef}
             required
             disabled={status === 'loading'}
             type="text"
-            className="input input-bordered w-full max-w-xs"
+            className="input input-bordered w-full max-w-lg"
             value={sessionName}
             onChange={(event) => {
               setSessionName(event.target.value);
@@ -144,7 +131,7 @@ function SessionDetailsForm({
             required
             disabled={status === 'loading'}
             type="time"
-            className="input input-bordered w-full max-w-xs"
+            className="input input-bordered w-full max-w-lg"
             value={sessionStartTime}
             onChange={(event) => {
               setSessionStartTime(event.target.value);
@@ -159,7 +146,7 @@ function SessionDetailsForm({
             required
             disabled={status === 'loading'}
             type="time"
-            className="input input-bordered w-full max-w-xs"
+            className="input input-bordered w-full max-w-lg"
             value={sessionEndTime}
             onChange={(event) => {
               setSessionEndTime(event.target.value);
@@ -174,7 +161,7 @@ function SessionDetailsForm({
             required
             disabled={status === 'loading'}
             type="text"
-            className="input input-bordered w-full max-w-xs"
+            className="input input-bordered w-full max-w-lg"
             value={sessionVenue}
             onChange={(event) => {
               setSessionVenue(event.target.value);
@@ -191,7 +178,7 @@ function SessionDetailsForm({
             required
             disabled={status === 'loading'}
             type="url"
-            className="input input-bordered w-full max-w-xs"
+            className="input input-bordered w-full max-w-lg"
             value={sessionSlidesLink}
             onChange={(event) => {
               setSessionSlidesLink(event.target.value);
@@ -214,7 +201,7 @@ function SessionDetailsForm({
             required
             disabled={status === 'loading'}
             type="text"
-            className="input input-bordered w-full max-w-xs"
+            className="input input-bordered w-full max-w-lg"
             value={speakerName}
             onChange={(event) => {
               setSpeakerName(event.target.value);
@@ -230,7 +217,7 @@ function SessionDetailsForm({
             required
             disabled={status === 'loading'}
             type="text"
-            className="input input-bordered w-full max-w-xs"
+            className="input input-bordered w-full max-w-lg"
             value={speakerTitle}
             onChange={(event) => {
               setSpeakerTitle(event.target.value);
@@ -246,7 +233,7 @@ function SessionDetailsForm({
             required
             disabled={status === 'loading'}
             type="url"
-            className="input input-bordered w-full max-w-xs"
+            className="input input-bordered w-full max-w-lg"
             value={speakerLinkedIn}
             onChange={(event) => {
               setSpeakerLinkedIn(event.target.value);
@@ -267,7 +254,7 @@ function SessionDetailsForm({
             required
             disabled={status === 'loading'}
             type="url"
-            className="input input-bordered w-full max-w-xs"
+            className="input input-bordered w-full max-w-lg"
             value={speakerTwitter}
             onChange={(event) => {
               setSpeakerTwitter(event.target.value);
@@ -330,13 +317,16 @@ function SessionDetailsForm({
             <button
               disabled={status === 'loading'}
               type="submit"
-              className="btn capitalize"
+              className="btn capitalize btn-primary text-white"
             >
               Create Event
             </button>
           )}
           {status === 'loading' && (
-            <button className="btn" disabled={status === 'loading'}>
+            <button
+              className="btn btn-primary text-white"
+              disabled={status === 'loading'}
+            >
               <span className="loading loading-spinner"></span>
               Creating Event
             </button>

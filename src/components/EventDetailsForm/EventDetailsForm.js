@@ -12,7 +12,7 @@ function EventDetailsForm({
   const router = useRouter();
   const handleCancel = (e) => {
     e.preventDefault();
-    router.push('/');
+    router.push('/dashboard');
   };
   if (formSubmissionProgress.activeForm !== 0) return;
 
@@ -23,7 +23,7 @@ function EventDetailsForm({
       <div className="divider"></div>
 
       <form
-        className="space-y-6"
+        className="space-y-6 max-w-lg mx-auto"
         onSubmit={(event) => {
           event.preventDefault();
 
@@ -40,8 +40,9 @@ function EventDetailsForm({
           </label>
           <input
             required
+            autoFocus
             type="text"
-            className="input input-bordered w-full max-w-xs"
+            className="input input-bordered w-full max-w-lg"
             value={eventDetails.eventName}
             onChange={(event) => {
               let newEventDetails = {
@@ -62,7 +63,7 @@ function EventDetailsForm({
           <input
             required
             type="text"
-            className="input input-bordered w-full max-w-xs"
+            className="input input-bordered w-full max-w-lg"
             value={eventDetails.eventLocation}
             onChange={(event) => {
               let newEventDetails = {
@@ -83,7 +84,7 @@ function EventDetailsForm({
           <input
             required
             type="date"
-            className="input input-bordered w-full max-w-xs"
+            className="input input-bordered w-full max-w-lg"
             min={getCurrentDate()}
             value={eventDetails.eventDate}
             onChange={(event) => {
@@ -104,7 +105,7 @@ function EventDetailsForm({
           <input
             required
             type="time"
-            className="input input-bordered w-full max-w-xs"
+            className="input input-bordered w-full max-w-lg"
             value={eventDetails.eventStartTime}
             onChange={(event) => {
               let newEventDetails = {
@@ -123,7 +124,7 @@ function EventDetailsForm({
           <input
             required
             type="time"
-            className="input input-bordered w-full max-w-xs"
+            className="input input-bordered w-full max-w-lg"
             value={eventDetails.eventEndTime}
             onChange={(event) => {
               let newEventDetails = {
@@ -138,12 +139,15 @@ function EventDetailsForm({
         <div className="form-control space-y-6 pb-10 pt-5">
           <button
             type="button"
-            className="btn capitalize"
+            className="btn capitalize btn-outline"
             onClick={handleCancel}
           >
             Cancel
           </button>
-          <button type="submit" className="btn capitalize">
+          <button
+            type="submit"
+            className="btn capitalize btn-primary text-white"
+          >
             Next
           </button>
         </div>
