@@ -1,8 +1,8 @@
-import { projectId } from "@/utils/appwrite";
-import { uploadImageToBucket } from "@/utils/db";
-import { useRouter } from "next/router";
-import React, { useState } from "react";
-import { getISODateTime } from "../../utils/utils";
+import { projectId } from '@/utils/appwrite';
+import { uploadImageToBucket } from '@/utils/db';
+import { useRouter } from 'next/router';
+import React, { useState } from 'react';
+import { getISODateTime } from '../../utils/utils';
 
 function SessionDetailsForm({
   formSubmissionProgress,
@@ -22,9 +22,10 @@ function SessionDetailsForm({
   const [speakerTitle, setSpeakerTitle] = useState('');
   const [speakerLinkedIn, setSpeakerLinkedIn] = useState('');
   const [speakerTwitter, setSpeakerTwitter] = useState('');
+  const [speakerImage, setSpeakerImage] = useState('');
 
   //idle  | loading | success | error
-  const [status, setStatus] = useState("idle");
+  const [status, setStatus] = useState('idle');
 
   const router = useRouter();
 
@@ -42,11 +43,11 @@ function SessionDetailsForm({
       name: sessionName,
       venue: sessionVenue,
       startTime:
-        sessionStartTime === ""
+        sessionStartTime === ''
           ? null
           : getISODateTime(eventDate, sessionStartTime),
       endTime:
-        sessionEndTime === ""
+        sessionEndTime === ''
           ? null
           : getISODateTime(eventDate, sessionEndTime),
       resourceLink: sessionSlidesLink,
@@ -62,7 +63,7 @@ function SessionDetailsForm({
 
   async function handleSubmit(event) {
     event.preventDefault();
-    let speakerImageUrl = "";
+    let speakerImageUrl = '';
     if (speakerImage) {
       try {
         speakerImageUrl = await uploadImageToBucket(speakerImage);
@@ -79,7 +80,7 @@ function SessionDetailsForm({
       venue: sessionVenue,
       resourceLink: sessionSlidesLink,
       speakerName: speakerName,
-      speakerImage: "",
+      speakerImage: '',
       speakerTitle: speakerTitle,
       speakerLinkedin: speakerLinkedIn,
       speakerTwitter: speakerTwitter,
@@ -87,9 +88,9 @@ function SessionDetailsForm({
     currentSessionInfo.speakerImage = speakerImageUrl;
     const result = await handleNewEventSubmit(currentSessionInfo);
     if (result.success) {
-      setStatus("success");
+      setStatus('success');
     } else {
-      setStatus("error");
+      setStatus('error');
     }
   }
 
@@ -105,7 +106,7 @@ function SessionDetailsForm({
       <form
         className="space-y-6 max-w-lg mx-auto"
         onSubmit={(event) => {
-          setStatus("loading");
+          setStatus('loading');
 
           handleSubmit(event);
         }}
@@ -122,7 +123,7 @@ function SessionDetailsForm({
             autoFocus
             ref={firstInputRef}
             required
-            disabled={status === "loading"}
+            disabled={status === 'loading'}
             type="text"
             className="input input-bordered w-full max-w-lg"
             value={sessionName}
@@ -139,7 +140,7 @@ function SessionDetailsForm({
           </label>
           <input
             required
-            disabled={status === "loading"}
+            disabled={status === 'loading'}
             type="time"
             className="input input-bordered w-full max-w-lg"
             value={sessionStartTime}
@@ -154,7 +155,7 @@ function SessionDetailsForm({
           </label>
           <input
             required
-            disabled={status === "loading"}
+            disabled={status === 'loading'}
             type="time"
             className="input input-bordered w-full max-w-lg"
             value={sessionEndTime}
@@ -169,7 +170,7 @@ function SessionDetailsForm({
           </label>
           <input
             required
-            disabled={status === "loading"}
+            disabled={status === 'loading'}
             type="text"
             className="input input-bordered w-full max-w-lg"
             value={sessionVenue}
@@ -186,7 +187,7 @@ function SessionDetailsForm({
           </label>
           <input
             required
-            disabled={status === "loading"}
+            disabled={status === 'loading'}
             type="url"
             className="input input-bordered w-full max-w-lg"
             value={sessionSlidesLink}
@@ -209,7 +210,7 @@ function SessionDetailsForm({
           </label>
           <input
             required
-            disabled={status === "loading"}
+            disabled={status === 'loading'}
             type="text"
             className="input input-bordered w-full max-w-lg"
             value={speakerName}
@@ -225,7 +226,7 @@ function SessionDetailsForm({
           </label>
           <input
             required
-            disabled={status === "loading"}
+            disabled={status === 'loading'}
             type="text"
             className="input input-bordered w-full max-w-lg"
             value={speakerTitle}
@@ -242,7 +243,7 @@ function SessionDetailsForm({
           </label>
           <input
             required
-            disabled={status === "loading"}
+            disabled={status === 'loading'}
             type="file"
             accept="image/png image/jpg"
             className="input input-bordered w-full max-w-xs"
@@ -258,7 +259,7 @@ function SessionDetailsForm({
           </label>
           <input
             required
-            disabled={status === "loading"}
+            disabled={status === 'loading'}
             type="url"
             className="input input-bordered w-full max-w-lg"
             value={speakerLinkedIn}
@@ -279,7 +280,7 @@ function SessionDetailsForm({
           </label>
           <input
             required
-            disabled={status === "loading"}
+            disabled={status === 'loading'}
             type="url"
             className="input input-bordered w-full max-w-lg"
             value={speakerTwitter}
@@ -295,7 +296,7 @@ function SessionDetailsForm({
         </div>
 
         <button
-          disabled={status === "loading"}
+          disabled={status === 'loading'}
           type="button"
           value="add another session"
           className="btn capitalize btn-outline"
@@ -314,21 +315,21 @@ function SessionDetailsForm({
             setFormSubmissionProgress(newFormSubmissionProgress);
 
             // clear the local state of the form inputs
-            setSessionName("");
-            setSessionStartTime("");
-            setSessionEndTime("");
-            setSessionSlidesLink("");
-            setSpeakerName("");
-            setSpeakerTitle("");
-            setSpeakerLinkedIn("");
-            setSpeakerTwitter("");
-            setSessionVenue("");
+            setSessionName('');
+            setSessionStartTime('');
+            setSessionEndTime('');
+            setSessionSlidesLink('');
+            setSpeakerName('');
+            setSpeakerTitle('');
+            setSpeakerLinkedIn('');
+            setSpeakerTwitter('');
+            setSessionVenue('');
 
             //set the focus to the first input element
             firstInputRef.current.scrollIntoView({
-              behavior: "smooth",
-              block: "end",
-              inline: "nearest",
+              behavior: 'smooth',
+              block: 'end',
+              inline: 'nearest',
             });
             setTimeout(() => {
               firstInputRef.current.focus();
@@ -340,9 +341,9 @@ function SessionDetailsForm({
         </button>
 
         <div className="form-control space-y-6 pb-10 pt-5 ">
-          {status === "idle" && (
+          {status === 'idle' && (
             <button
-              disabled={status === "loading"}
+              disabled={status === 'loading'}
               type="submit"
               className="btn capitalize btn-primary text-white"
             >
