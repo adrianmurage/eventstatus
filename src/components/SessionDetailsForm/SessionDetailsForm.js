@@ -1,7 +1,8 @@
-import React from 'react';
-import { useState } from 'react';
-import { getISODateTime } from '../../utils/utils';
+import { projectId } from '@/utils/appwrite';
+import { uploadImageToBucket } from '@/utils/db';
 import { useRouter } from 'next/router';
+import React, { useState } from 'react';
+import { getISODateTime } from '../../utils/utils';
 
 function SessionDetailsForm({
   formSubmissionProgress,
@@ -11,19 +12,17 @@ function SessionDetailsForm({
   handleNewEventSubmit,
   eventDate,
 }) {
-  const [sessionName, setSessionName] = useState('Bootstrapping 101');
-  const [sessionStartTime, setSessionStartTime] = useState('09:00');
-  const [sessionEndTime, setSessionEndTime] = useState('10:00');
-  const [sessionSlidesLink, setSessionSlidesLink] =
-    useState('https://slides.com');
-  const [sessionVenue, setSessionVenue] = useState('room 101');
+  const [sessionName, setSessionName] = useState('');
+  const [sessionStartTime, setSessionStartTime] = useState('');
+  const [sessionEndTime, setSessionEndTime] = useState('');
+  const [sessionSlidesLink, setSessionSlidesLink] = useState('');
+  const [sessionVenue, setSessionVenue] = useState('');
 
-  const [speakerName, setSpeakerName] = useState('Adrian Murage');
-  const [speakerTitle, setSpeakerTitle] = useState('Founder 47 Places');
-  const [speakerLinkedIn, setSpeakerLinkedIn] = useState(
-    'https://linkedin.com'
-  );
-  const [speakerTwitter, setSpeakerTwitter] = useState('https://twitter.com');
+  const [speakerName, setSpeakerName] = useState('');
+  const [speakerTitle, setSpeakerTitle] = useState('');
+  const [speakerLinkedIn, setSpeakerLinkedIn] = useState('');
+  const [speakerTwitter, setSpeakerTwitter] = useState('');
+  const [speakerImage, setSpeakerImage] = useState('');
 
   //idle  | loading | success | error
   const [status, setStatus] = useState('idle');
@@ -64,7 +63,16 @@ function SessionDetailsForm({
 
   async function handleSubmit(event) {
     event.preventDefault();
-
+    let speakerImageUrl = '';
+    if (speakerImage) {
+      try {
+        speakerImageUrl = await uploadImageToBucket(speakerImage);
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      speakerImageUrl = `https://cloud.appwrite.io/v1/avatars/initials?name=${speakerName}&project=${projectId}`;
+    }
     let currentSessionInfo = {
       name: sessionName,
       startTime: getISODateTime(eventDate, sessionStartTime),
@@ -72,13 +80,13 @@ function SessionDetailsForm({
       venue: sessionVenue,
       resourceLink: sessionSlidesLink,
       speakerName: speakerName,
+      speakerImage: '',
       speakerTitle: speakerTitle,
       speakerLinkedin: speakerLinkedIn,
       speakerTwitter: speakerTwitter,
     };
-
+    currentSessionInfo.speakerImage = speakerImageUrl;
     const result = await handleNewEventSubmit(currentSessionInfo);
-
     if (result.success) {
       setStatus('success');
     } else {
@@ -87,19 +95,8 @@ function SessionDetailsForm({
   }
 
   if (status === 'success') {
-    return (
-      <>
-        <p>Event Created!</p>
-        <button
-          onClick={() => {
-            router.push('/');
-          }}
-          className="btn capitalize"
-        >
-          See my events
-        </button>
-      </>
-    );
+    router.push('/dashboard');
+    return;
   }
 
   return (
@@ -107,7 +104,7 @@ function SessionDetailsForm({
       <p>Great, we have an event! Let's add sessions to your event.</p>
       <div className="divider"></div>
       <form
-        className="space-y-6"
+        className="space-y-6 max-w-lg mx-auto"
         onSubmit={(event) => {
           setStatus('loading');
 
@@ -123,11 +120,12 @@ function SessionDetailsForm({
             </span>
           </label>
           <input
+            autoFocus
             ref={firstInputRef}
             required
             disabled={status === 'loading'}
             type="text"
-            className="input input-bordered w-full max-w-xs"
+            className="input input-bordered w-full max-w-lg"
             value={sessionName}
             onChange={(event) => {
               setSessionName(event.target.value);
@@ -144,7 +142,7 @@ function SessionDetailsForm({
             required
             disabled={status === 'loading'}
             type="time"
-            className="input input-bordered w-full max-w-xs"
+            className="input input-bordered w-full max-w-lg"
             value={sessionStartTime}
             onChange={(event) => {
               setSessionStartTime(event.target.value);
@@ -159,7 +157,7 @@ function SessionDetailsForm({
             required
             disabled={status === 'loading'}
             type="time"
-            className="input input-bordered w-full max-w-xs"
+            className="input input-bordered w-full max-w-lg"
             value={sessionEndTime}
             onChange={(event) => {
               setSessionEndTime(event.target.value);
@@ -174,7 +172,7 @@ function SessionDetailsForm({
             required
             disabled={status === 'loading'}
             type="text"
-            className="input input-bordered w-full max-w-xs"
+            className="input input-bordered w-full max-w-lg"
             value={sessionVenue}
             onChange={(event) => {
               setSessionVenue(event.target.value);
@@ -191,7 +189,7 @@ function SessionDetailsForm({
             required
             disabled={status === 'loading'}
             type="url"
-            className="input input-bordered w-full max-w-xs"
+            className="input input-bordered w-full max-w-lg"
             value={sessionSlidesLink}
             onChange={(event) => {
               setSessionSlidesLink(event.target.value);
@@ -214,7 +212,7 @@ function SessionDetailsForm({
             required
             disabled={status === 'loading'}
             type="text"
-            className="input input-bordered w-full max-w-xs"
+            className="input input-bordered w-full max-w-lg"
             value={speakerName}
             onChange={(event) => {
               setSpeakerName(event.target.value);
@@ -230,14 +228,31 @@ function SessionDetailsForm({
             required
             disabled={status === 'loading'}
             type="text"
-            className="input input-bordered w-full max-w-xs"
+            className="input input-bordered w-full max-w-lg"
             value={speakerTitle}
             onChange={(event) => {
               setSpeakerTitle(event.target.value);
             }}
           />
         </div>
-
+        <div className="form-control w-full">
+          <label className="label">
+            <span className="label-text">
+              Have the speaker's profile image? Upload it here
+            </span>
+          </label>
+          <input
+            required
+            disabled={status === 'loading'}
+            type="file"
+            accept="image/png image/jpg"
+            className="input input-bordered w-full max-w-xs"
+            onChange={(event) => {
+              console.log(event);
+              setSpeakerImage(event.target.files[0]);
+            }}
+          />
+        </div>
         <div className="form-control w-full">
           <label className="label">
             <span className="label-text">What is the speaker's LinkedIn?</span>
@@ -246,7 +261,7 @@ function SessionDetailsForm({
             required
             disabled={status === 'loading'}
             type="url"
-            className="input input-bordered w-full max-w-xs"
+            className="input input-bordered w-full max-w-lg"
             value={speakerLinkedIn}
             onChange={(event) => {
               setSpeakerLinkedIn(event.target.value);
@@ -267,7 +282,7 @@ function SessionDetailsForm({
             required
             disabled={status === 'loading'}
             type="url"
-            className="input input-bordered w-full max-w-xs"
+            className="input input-bordered w-full max-w-lg"
             value={speakerTwitter}
             onChange={(event) => {
               setSpeakerTwitter(event.target.value);
@@ -330,13 +345,16 @@ function SessionDetailsForm({
             <button
               disabled={status === 'loading'}
               type="submit"
-              className="btn capitalize"
+              className="btn capitalize btn-primary text-white"
             >
               Create Event
             </button>
           )}
           {status === 'loading' && (
-            <button className="btn" disabled={status === 'loading'}>
+            <button
+              className="btn btn-primary text-white"
+              disabled={status === 'loading'}
+            >
               <span className="loading loading-spinner"></span>
               Creating Event
             </button>

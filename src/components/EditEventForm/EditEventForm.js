@@ -76,13 +76,16 @@ function EditEventForm({ eventDetails }) {
           </div>
           <button
             type="button"
-            className="btn capitalize"
+            className="btn capitalize btn-primary text-white"
             onClick={() => {
               router.reload();
             }}
           >
             Ok
           </button>
+        </form>
+        <form method="dialog" className="modal-backdrop">
+          <button>close</button>
         </form>
       </>
     );
@@ -109,7 +112,7 @@ function EditEventForm({ eventDetails }) {
                 required
                 disabled={status === 'loading'}
                 type="text"
-                className="input input-bordered w-full max-w-xs"
+                className="input input-bordered w-full max-w-lg"
                 value={eventData.name}
                 onChange={(event) => {
                   let newEventData = {
@@ -129,7 +132,7 @@ function EditEventForm({ eventDetails }) {
                 required
                 disabled={status === 'loading'}
                 type="date"
-                className="input input-bordered w-full max-w-xs"
+                className="input input-bordered w-full max-w-lg"
                 min={getCurrentDate()}
                 value={eventData.date}
                 onChange={(event) => {
@@ -151,7 +154,7 @@ function EditEventForm({ eventDetails }) {
                 required
                 disabled={status === 'loading'}
                 type="time"
-                className="input input-bordered w-full max-w-xs"
+                className="input input-bordered w-full max-w-lg"
                 value={eventData.startTime}
                 onChange={(event) => {
                   let newEventData = {
@@ -171,7 +174,7 @@ function EditEventForm({ eventDetails }) {
                 required
                 disabled={status === 'loading'}
                 type="time"
-                className="input input-bordered w-full max-w-xs"
+                className="input input-bordered w-full max-w-lg"
                 value={eventData.endTime}
                 onChange={(event) => {
                   let newEventData = {
@@ -191,7 +194,7 @@ function EditEventForm({ eventDetails }) {
                 required
                 disabled={status === 'loading'}
                 type="text"
-                className="input input-bordered w-full max-w-xs"
+                className="input input-bordered w-full max-w-lg"
                 value={eventData.venue}
                 onChange={(event) => {
                   let newEventData = {
@@ -206,7 +209,7 @@ function EditEventForm({ eventDetails }) {
               <button
                 disabled={status === 'loading'}
                 type="button"
-                className="btn capitalize"
+                className="btn capitalize btn-outline"
                 onClick={() => {
                   window.edit_event_modal.close();
                 }}
@@ -217,13 +220,16 @@ function EditEventForm({ eventDetails }) {
                 <button
                   disabled={status === 'loading'}
                   type="submit"
-                  className="btn capitalize"
+                  className="btn capitalize btn-primary text-white"
                 >
                   Save
                 </button>
               )}
               {status === 'loading' && (
-                <button className="btn" disabled={status === 'loading'}>
+                <button
+                  className="btn capitalize btn-primary text-white"
+                  disabled={status === 'loading'}
+                >
                   <span className="loading loading-spinner"></span>
                   Saving
                 </button>
@@ -231,6 +237,9 @@ function EditEventForm({ eventDetails }) {
             </div>
           </div>
         </div>
+      </form>
+      <form method="dialog" className="modal-backdrop">
+        <button>close</button>
       </form>
     </>
   );

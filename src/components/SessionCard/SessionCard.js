@@ -16,6 +16,7 @@ function SessionCard({
   speakerTitle,
   speakerTwitter,
   resourceLink,
+  speakerImage,
   venue,
 }) {
   const btnRef = useRef(null);
@@ -27,7 +28,7 @@ function SessionCard({
   const handleLeave = () => {
     btnRef.current.style.color = "rgb(71 85 105)";
   };
-
+  console.log(speakerImage);
   return (
     <>
       <div
@@ -53,6 +54,13 @@ function SessionCard({
         <div className="collapse-content">
           <section className="mt-6 ">
             <h1 className=" tracking-wide  mb-1 text-slate-500">Speaker</h1>
+            {speakerImage && (
+              <div className="avatar">
+                <div className="w-16 rounded mt-1">
+                  <img src={speakerImage} />
+                </div>
+              </div>
+            )}
             <div className="mb-2  ">{speakerName}</div>
             <div className="  mb-2 ">{speakerTitle}</div>
             <div className="flex align-middle">

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import EventDetailsForm from '../components/EventDetailsForm/EventDetailsForm';
 import SessionDetailsForm from '../components/SessionDetailsForm/SessionDetailsForm';
 import { getISODateTime } from '../utils/utils';
+import Header from '@/components/Header/Header';
 
 export default function NewEvent() {
   const [formSubmissionProgress, setFormSubmissionProgress] = useState({
@@ -11,11 +12,11 @@ export default function NewEvent() {
     activeSessionSubmission: 0,
   });
   const [eventDetails, setEventDetails] = useState({
-    eventName: 'micro conf',
-    eventLocation: 'nairobi',
-    eventDate: '2023-12-12',
-    eventStartTime: '08:00',
-    eventEndTime: '18:00',
+    eventName: '',
+    eventLocation: '',
+    eventDate: '',
+    eventStartTime: '',
+    eventEndTime: '',
   });
   const [sessionsDetailsArray, setSessionsDetailsArray] = useState([]);
 
@@ -38,14 +39,14 @@ export default function NewEvent() {
     };
     console.log(eventInfo);
 
-    const endpoint = 'api/events';
+    const endpoint = "api/events";
 
     const JSONData = JSON.stringify(eventInfo);
 
     const options = {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSONData,
     };
@@ -57,7 +58,8 @@ export default function NewEvent() {
 
   return (
     <>
-      <div className="container max-w-xs mx-auto pt-6">
+      <Header />
+      <div className="max-w-7xl mx-auto px-6 md:px-6 lg:px-8 pt-24 pb-14">
         <EventDetailsForm
           formSubmissionProgress={formSubmissionProgress}
           setFormSubmissionProgress={setFormSubmissionProgress}

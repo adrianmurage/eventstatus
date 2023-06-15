@@ -81,13 +81,16 @@ function EditSessionForm({ sessionDetails }) {
           </div>
           <button
             type="button"
-            className="btn capitalize"
+            className="btn capitalize btn-primary text-white"
             onClick={() => {
               router.reload();
             }}
           >
             Ok
           </button>
+        </form>
+        <form method="dialog" className="modal-backdrop">
+          <button>close</button>
         </form>
       </>
     );
@@ -253,7 +256,7 @@ function EditSessionForm({ sessionDetails }) {
 
             <div className="form-control w-full">
               <label className="label">
-                <span className="label-text">Speaker's LinkedIn?</span>
+                <span className="label-text">Speaker's LinkedIn</span>
               </label>
               <input
                 required
@@ -278,7 +281,7 @@ function EditSessionForm({ sessionDetails }) {
 
             <div className="form-control w-full">
               <label className="label">
-                <span className="label-text">Speaker's Twitter?</span>
+                <span className="label-text">Speaker's Twitter</span>
               </label>
               <input
                 required
@@ -305,9 +308,11 @@ function EditSessionForm({ sessionDetails }) {
               <button
                 disabled={status === 'loading'}
                 type="button"
-                className="btn capitalize"
+                className="btn capitalize btn-outline"
                 onClick={() => {
-                  window.edit_session_modal.close();
+                  window.window[
+                    `edit_session_${sessionDetails.$id}_modal`
+                  ].close();
                 }}
               >
                 Cancel
@@ -316,13 +321,16 @@ function EditSessionForm({ sessionDetails }) {
                 <button
                   disabled={status === 'loading'}
                   type="submit"
-                  className="btn capitalize"
+                  className="btn capitalize btn-primary text-white"
                 >
                   Save
                 </button>
               )}
               {status === 'loading' && (
-                <button className="btn" disabled={status === 'loading'}>
+                <button
+                  className="btn capitalize btn-primary text-white"
+                  disabled={status === 'loading'}
+                >
                   <span className="loading loading-spinner"></span>
                   Saving
                 </button>
@@ -330,6 +338,9 @@ function EditSessionForm({ sessionDetails }) {
             </div>
           </div>
         </div>
+      </form>
+      <form method="dialog" className="modal-backdrop">
+        <button>close</button>
       </form>
     </>
   );
