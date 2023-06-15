@@ -1,16 +1,24 @@
-import { Menu, Transition } from '@headlessui/react';
+import { Menu, Transition } from "@headlessui/react";
 import {
   DotsHorizontalIcon,
   Pencil2Icon,
   TrashIcon,
-} from '@radix-ui/react-icons';
-import { Fragment } from 'react';
+} from "@radix-ui/react-icons";
+import { useRouter } from "next/router";
+import { Fragment } from "react";
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
+  return classes.filter(Boolean).join(" ");
 }
 
 export default function EditEventDropdown({ eventID }) {
+  const router = useRouter();
+  const deleteDocument = async () => {
+    await fetch(`/api/events?eventId=${eventID}`, {
+      method: "DELETE",
+    });
+    router.push("/dashboard");
+  };
   return (
     <Menu as="div" className="relative inline-block text-left">
       <div>
@@ -35,8 +43,8 @@ export default function EditEventDropdown({ eventID }) {
                 <div
                   onClick={() => window.edit_event_modal.showModal()}
                   className={classNames(
-                    active ? 'bg-orange text-white' : 'text-white',
-                    'block px-4 py-2 text-sm'
+                    active ? "bg-orange text-white" : "text-white",
+                    "block px-4 py-2 text-sm"
                   )}
                 >
                   <div className="flex items-center space-x-3">
@@ -51,11 +59,14 @@ export default function EditEventDropdown({ eventID }) {
                 <a
                   href="#"
                   className={classNames(
-                    active ? 'bg-red-500 text-white' : 'text-white',
-                    'block px-4 py-2 text-sm'
+                    active ? "bg-red-500 text-white" : "text-white",
+                    "block px-4 py-2 text-sm"
                   )}
                 >
-                  <div className="flex items-center space-x-3">
+                  <div
+                    className="flex items-center space-x-3"
+                    onClick={deleteDocument}
+                  >
                     <TrashIcon />
                     <span>Delete</span>
                   </div>
