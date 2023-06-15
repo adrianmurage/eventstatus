@@ -20,7 +20,7 @@ function EventDetailsHeader({ eventDetails }) {
             <h2 className="text-2xl font-bold capitalize">
               {eventDetails.name}
             </h2>
-            <EditEventDropdown />
+            <EditEventDropdown eventID={eventDetails.$id} />
           </div>
           <div>
             <div className="flex justify-between items-end">
