@@ -10,9 +10,7 @@ A web application that makes it easy for event attendees to access information a
 
 ![image](https://github.com/adrianmurage/eventstatus/assets/47227271/bd4a1208-ff03-418b-8df9-156009eb94c4)
 
-![image](https://github.com/adrianmurage/eventstatus/assets/47227271/8d3fe650-2218-447d-be7e-fc98490d35a5)
 
-![image](https://github.com/adrianmurage/eventstatus/assets/47227271/423e703b-661e-4436-bc5d-1eaaf167a1df)
 
 ## Run Locally
 
