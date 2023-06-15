@@ -49,7 +49,7 @@ export default async (req, res) => {
   }
 
   if (req.method.toUpperCase() == "POST") {
-    const { eventId } = req.query;
+    const { eventId } = req.body;
     const { sessionData } = req.body;
     const session = sessionData;
     session.eventId = eventId;
