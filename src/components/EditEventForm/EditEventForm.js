@@ -205,7 +205,7 @@ function EditEventForm({ eventDetails }) {
                 }}
               />
             </div>
-            <div className="form-control space-y-6 pb-10 pt-5">
+            <div className="form-control space-y-6 pb-10 pt-5 ">
               <button
                 disabled={status === 'loading'}
                 type="button"

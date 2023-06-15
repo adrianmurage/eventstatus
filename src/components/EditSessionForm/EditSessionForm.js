@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import { CheckCircledIcon } from '@radix-ui/react-icons';
 import { useRouter } from 'next/router';
 
-function EditSessionForm({ sessionDetails }) {
+function EditSessionForm({ sessionDetails}) {
   const [eventDate, setEventDate] = useState(
     formatDateForInput(sessionDetails.startTime)
   );
@@ -116,7 +116,7 @@ function EditSessionForm({ sessionDetails }) {
                 required
                 disabled={status === 'loading'}
                 type="text"
-                className="input input-bordered w-full max-w-xs"
+                className="input input-bordered w-full max-w-lg"
                 value={sessionData.name}
                 onChange={(event) => {
                   let newSessionData = {
@@ -136,7 +136,7 @@ function EditSessionForm({ sessionDetails }) {
                 required
                 disabled={status === 'loading'}
                 type="time"
-                className="input input-bordered w-full max-w-xs"
+                className="input input-bordered w-full max-w-lg"
                 value={sessionData.startTime}
                 onChange={(event) => {
                   let newSessionData = {
@@ -156,7 +156,7 @@ function EditSessionForm({ sessionDetails }) {
                 required
                 disabled={status === 'loading'}
                 type="time"
-                className="input input-bordered w-full max-w-xs"
+                className="input input-bordered w-full max-w-lg"
                 value={sessionData.endTime}
                 onChange={(event) => {
                   let newSessionData = {
@@ -176,7 +176,7 @@ function EditSessionForm({ sessionDetails }) {
                 required
                 disabled={status === 'loading'}
                 type="text"
-                className="input input-bordered w-full max-w-xs"
+                className="input input-bordered w-full max-w-lg"
                 value={sessionData.venue}
                 onChange={(event) => {
                   let newSessionData = {
@@ -196,7 +196,7 @@ function EditSessionForm({ sessionDetails }) {
                 required
                 disabled={status === 'loading'}
                 type="url"
-                className="input input-bordered w-full max-w-xs"
+                className="input input-bordered w-full max-w-lg"
                 value={sessionData.resourceLink}
                 onChange={(event) => {
                   let newSessionData = {
@@ -222,7 +222,7 @@ function EditSessionForm({ sessionDetails }) {
                 required
                 disabled={status === 'loading'}
                 type="text"
-                className="input input-bordered w-full max-w-xs"
+                className="input input-bordered w-full max-w-lg"
                 value={sessionData.speakerName}
                 onChange={(event) => {
                   let newSessionData = {
@@ -242,7 +242,7 @@ function EditSessionForm({ sessionDetails }) {
                 required
                 disabled={status === 'loading'}
                 type="text"
-                className="input input-bordered w-full max-w-xs"
+                className="input input-bordered w-full max-w-lg"
                 value={sessionData.speakerTitle}
                 onChange={(event) => {
                   let newSessionData = {
@@ -262,7 +262,7 @@ function EditSessionForm({ sessionDetails }) {
                 required
                 disabled={status === 'loading'}
                 type="url"
-                className="input input-bordered w-full max-w-xs"
+                className="input input-bordered w-full max-w-lg"
                 value={sessionData.speakerLinkedin}
                 onChange={(event) => {
                   let newSessionData = {
@@ -287,7 +287,7 @@ function EditSessionForm({ sessionDetails }) {
                 required
                 disabled={status === 'loading'}
                 type="url"
-                className="input input-bordered w-full max-w-xs"
+                className="input input-bordered w-full max-w-lg"
                 value={sessionData.speakerTwitter}
                 onChange={(event) => {
                   let newSessionData = {
