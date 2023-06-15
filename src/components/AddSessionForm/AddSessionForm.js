@@ -1,36 +1,53 @@
-import React, { useState } from 'react';
+import { formatDateForInput, getISODateTime } from '@/utils/utils';
+import { CheckCircledIcon } from '@radix-ui/react-icons';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 
 function AddSessionForm({ eventData }) {
-  const [sessionData, setSessionData] = useState({});
+  const [sessionDetails, setSessionDetails] = useState({
+    name: '',
+    startTime: '',
+    endTime: '',
+    venue: '',
+    resourceLink: '',
+    speakerName: '',
+    speakerTitle: '',
+    speakerLinkedin: '',
+    speakerTwitter: '',
+  });
+  const [eventDate, setEventDate] = useState(
+    formatDateForInput(eventData.date)
+  );
   const [status, setStatus] = useState('idle');
   const router = useRouter();
 
   async function handleSubmit(event) {
-    setStatus('loading');
+    // setStatus('loading');
     event.preventDefault();
 
     let payload = {
-      data: {
-        name: sessionData.name,
-        startTime: getISODateTime(eventDate, sessionData.startTime),
-        endTime: getISODateTime(eventDate, sessionData.endTime),
-        venue: sessionData.venue,
-        resourceLink: sessionData.resourceLink,
-        speakerName: sessionData.speakerName,
-        speakerTitle: sessionData.speakerTitle,
-        speakerLinkedin: sessionData.speakerLinkedin,
-        speakerTwitter: sessionData.speakerTwitter,
+      sessionData: {
+        name: sessionDetails.name,
+        startTime: getISODateTime(eventDate, sessionDetails.startTime),
+        endTime: getISODateTime(eventDate, sessionDetails.endTime),
+        venue: sessionDetails.venue,
+        resourceLink: sessionDetails.resourceLink,
+        speakerName: sessionDetails.speakerName,
+        speakerTitle: sessionDetails.speakerTitle,
+        speakerLinkedin: sessionDetails.speakerLinkedin,
+        speakerTwitter: sessionDetails.speakerTwitter,
       },
-      sessionId: sessionDetails.$id,
+      eventId: eventData.$id,
     };
 
-    const endpoint = '../../api/sessions';
+    console.log({payload})
+
+    const endpoint = '../api/sessions';
 
     const JSONData = JSON.stringify(payload);
     console.log({ payload });
     const options = {
-      method: 'PATCH',
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -98,13 +115,13 @@ function AddSessionForm({ eventData }) {
                 disabled={status === 'loading'}
                 type="text"
                 className="input input-bordered w-full max-w-lg"
-                value={sessionData.name}
+                value={sessionDetails.name}
                 onChange={(event) => {
-                  let newSessionData = {
-                    ...sessionData,
+                  let newSessionDetails = {
+                    ...sessionDetails,
                     name: event.target.value,
                   };
-                  setSessionData(newSessionData);
+                  setSessionDetails(newSessionDetails);
                 }}
               />
             </div>
@@ -118,13 +135,13 @@ function AddSessionForm({ eventData }) {
                 disabled={status === 'loading'}
                 type="time"
                 className="input input-bordered w-full max-w-lg"
-                value={sessionData.startTime}
+                value={sessionDetails.startTime}
                 onChange={(event) => {
-                  let newSessionData = {
-                    ...sessionData,
+                  let newSessionDetails = {
+                    ...sessionDetails,
                     startTime: event.target.value,
                   };
-                  setSessionData(newSessionData);
+                  setSessionDetails(newSessionDetails);
                 }}
               />
             </div>
@@ -138,13 +155,13 @@ function AddSessionForm({ eventData }) {
                 disabled={status === 'loading'}
                 type="time"
                 className="input input-bordered w-full max-w-lg"
-                value={sessionData.endTime}
+                value={sessionDetails.endTime}
                 onChange={(event) => {
-                  let newSessionData = {
-                    ...sessionData,
+                  let newSessionDetails = {
+                    ...sessionDetails,
                     endTime: event.target.value,
                   };
-                  setSessionData(newSessionData);
+                  setSessionDetails(newSessionDetails);
                 }}
               />
             </div>
@@ -158,13 +175,13 @@ function AddSessionForm({ eventData }) {
                 disabled={status === 'loading'}
                 type="text"
                 className="input input-bordered w-full max-w-lg"
-                value={sessionData.venue}
+                value={sessionDetails.venue}
                 onChange={(event) => {
-                  let newSessionData = {
-                    ...sessionData,
+                  let newSessionDetails = {
+                    ...sessionDetails,
                     venue: event.target.value,
                   };
-                  setSessionData(newSessionData);
+                  setSessionDetails(newSessionDetails);
                 }}
               />
             </div>
@@ -178,13 +195,13 @@ function AddSessionForm({ eventData }) {
                 disabled={status === 'loading'}
                 type="url"
                 className="input input-bordered w-full max-w-lg"
-                value={sessionData.resourceLink}
+                value={sessionDetails.resourceLink}
                 onChange={(event) => {
-                  let newSessionData = {
-                    ...sessionData,
+                  let newSessionDetails = {
+                    ...sessionDetails,
                     resourceLink: event.target.value,
                   };
-                  setSessionData(newSessionData);
+                  setSessionDetails(newSessionDetails);
                 }}
               />
               <label className="label">
@@ -204,13 +221,13 @@ function AddSessionForm({ eventData }) {
                 disabled={status === 'loading'}
                 type="text"
                 className="input input-bordered w-full max-w-lg"
-                value={sessionData.speakerName}
+                value={sessionDetails.speakerName}
                 onChange={(event) => {
-                  let newSessionData = {
-                    ...sessionData,
+                  let newSessionDetails = {
+                    ...sessionDetails,
                     speakerName: event.target.value,
                   };
-                  setSessionData(newSessionData);
+                  setSessionDetails(newSessionDetails);
                 }}
               />
             </div>
@@ -224,13 +241,13 @@ function AddSessionForm({ eventData }) {
                 disabled={status === 'loading'}
                 type="text"
                 className="input input-bordered w-full max-w-lg"
-                value={sessionData.speakerTitle}
+                value={sessionDetails.speakerTitle}
                 onChange={(event) => {
-                  let newSessionData = {
-                    ...sessionData,
+                  let newSessionDetails = {
+                    ...sessionDetails,
                     speakerTitle: event.target.value,
                   };
-                  setSessionData(newSessionData);
+                  setSessionDetails(newSessionDetails);
                 }}
               />
             </div>
@@ -244,13 +261,13 @@ function AddSessionForm({ eventData }) {
                 disabled={status === 'loading'}
                 type="url"
                 className="input input-bordered w-full max-w-lg"
-                value={sessionData.speakerLinkedin}
+                value={sessionDetails.speakerLinkedin}
                 onChange={(event) => {
-                  let newSessionData = {
-                    ...sessionData,
+                  let newSessionDetails = {
+                    ...sessionDetails,
                     speakerLinkedin: event.target.value,
                   };
-                  setSessionData(newSessionData);
+                  setSessionDetails(newSessionDetails);
                 }}
               />
               <label className="label">
@@ -269,14 +286,14 @@ function AddSessionForm({ eventData }) {
                 disabled={status === 'loading'}
                 type="url"
                 className="input input-bordered w-full max-w-lg"
-                value={sessionData.speakerTwitter}
+                value={sessionDetails.speakerTwitter}
                 onChange={(event) => {
-                  let newSessionData = {
-                    ...sessionData,
+                  let newSessionDetails = {
+                    ...sessionDetails,
                     speakerTwitter: event.target.value,
                   };
 
-                  setSessionData(newSessionData);
+                  setSessionDetails(newSessionDetails);
                 }}
               />
               <label className="label">
@@ -291,9 +308,7 @@ function AddSessionForm({ eventData }) {
                 type="button"
                 className="btn capitalize btn-outline"
                 onClick={() => {
-                  window.window[
-                    `edit_session_${sessionDetails.$id}_modal`
-                  ].close();
+                  window.add_session_modal.close();
                 }}
               >
                 Cancel
